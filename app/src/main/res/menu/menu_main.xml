@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="moe.dreameh.assignment1.MainActivity"
+    app:showAsAction="ifRoom">
+
+    <item
+        android:id="@+id/all_menu"
+        android:title="@string/all" />
+    <item
+        android:id="@+id/lifestyle_menu"
+        android:title="@string/lifestyle" />
+    <item
+        android:id="@+id/tech_menu"
+        android:title="@string/technology" />
+    <item
+        android:id="@+id/misc_menu"
+        android:title="@string/miscellaneous" />
+</menu>
