@@ -8,11 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.lifecycle.Observer
-import androidx.lifecycle.get
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.start_fragment.*
@@ -36,10 +32,6 @@ class StartFragment : Fragment() {
         // get objects to the recyclerView
         viewAdapter = AdviceAdapter(viewModel.getAdvices().value)
 
-
-
-
-
         return rootView
     }
 
@@ -49,7 +41,6 @@ class StartFragment : Fragment() {
         recycler_view.apply {
             // Improve performance for the recyclerview
             setHasFixedSize(true)
-
             // Apply the layoutManager for the recyclerView
             layoutManager = viewManager
             // Set adapter
@@ -84,6 +75,13 @@ class StartFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        if(view != null) {
+            val parentViewGroup = view?.parent as ViewGroup?
+            parentViewGroup?.removeAllViews()
+        }
+        super.onDestroyView()
+    }
 
 
 }

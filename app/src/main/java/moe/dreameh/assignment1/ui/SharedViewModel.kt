@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import moe.dreameh.assignment1.Advice
 
-
 class SharedViewModel : ViewModel() {
-
 
     private val list = mutableListOf(
             Advice(
@@ -25,8 +23,6 @@ class SharedViewModel : ViewModel() {
                     "Impressive. Most impressive. Obi-Wan has taught you well. You have controlled your fear. Now, release your anger. Only your hatred can destroy me."
             )
     )
-
-
 
     private val adviceList by lazy {
         MutableLiveData<MutableList<Advice>>().apply { postValue(list) }
