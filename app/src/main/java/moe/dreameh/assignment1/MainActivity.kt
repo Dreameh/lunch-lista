@@ -7,12 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-import java.util.*
-
 class MainActivity : AppCompatActivity() {
-    private var adviceList: MutableList<Advice> = ArrayList()
-
-    private val CHILD_ACTIVITY_RESULT = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

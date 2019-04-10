@@ -51,7 +51,7 @@ class AddAdviceFragment : Fragment() {
                 enter_content.text.isEmpty() -> enter_content.error = "Field cannot be left blank."
                 else -> {
                     // Add a new advice to the obvservable adviceList
-                    viewModel.setNewAdvice(Advice(
+                    viewModel.addNewAdvice(Advice(
                             enter_name.text.toString(),
                             category[0],
                             enter_content.text.toString()))
@@ -59,7 +59,7 @@ class AddAdviceFragment : Fragment() {
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
                 }
             }
-            Navigation.findNavController(rootView).navigate(R.id.action_addAdviceFragment_to_startFragment)
+            Navigation.createNavigateOnClickListener(R.id.action_addAdviceFragment_to_startFragment)
         }
         return rootView
     }

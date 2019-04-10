@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.advice_list_row.view.*
 
 
-class AdviceAdapter(private val adviceList: MutableList<Advice>) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
+class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val author = view.author
@@ -26,15 +26,18 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>) : RecyclerView.
 
     // Set ViewHolder variables to the list's item variables
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        adviceList[position].also { advice ->
-            holder.author.text = advice.author
-            holder.category.text = advice.category
-            holder.content.text = advice.content
+        with(adviceList?.get(position)) {
+            holder.author.text = this?.author
+            holder.category.text = this?.category
+            holder.content.text = this?.content
         }
     }
 
     //Get size of advicelist
     override fun getItemCount(): Int {
-        return adviceList.size
+        if (adviceList != null) {
+            return adviceList.size
+        }
+        return 0
     }
 }
