@@ -69,10 +69,11 @@ class StartFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, views: View?, position: Int, id: Long) {
                 // Getting the category spinner item and checking if it's related to "All" or the rest of them.
-                if (parent?.getItemAtPosition(position).toString() == "All") {
-                    recycler_view.adapter = AdviceAdapter(viewModel.getAdvices().value!!)
-                } else {
-                    recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent?.getItemAtPosition(position).toString()) as MutableList<Advice>)
+                when(parent?.getItemAtPosition(position).toString()) {
+                    "All" -> recycler_view.adapter = AdviceAdapter(viewModel.getAdvices().value!!)
+                    else -> {
+                        recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent?.getItemAtPosition(position).toString()) as MutableList<Advice>)
+                    }
                 }
             }
 
@@ -80,14 +81,15 @@ class StartFragment : Fragment() {
                 // Nothing will be added here.
             }
         }
-        if(activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
-            fab_button.setOnClickListener {
-                it.findNavController().navigate(R.id.action_startFragment_to_addAdviceFragment)
-            }
-        } else {
-            fab_button.hide()
-        }
 
+        when (activity?.resources?.configuration?.orientation) {
+            ORIENTATION_PORTRAIT -> {
+                fab_button.setOnClickListener {
+                    it.findNavController().navigate(R.id.action_startFragment_to_addAdviceFragment)
+                }
+            }
+            else -> fab_button.hide()
+        }
     }
 
     override fun onResume() {
