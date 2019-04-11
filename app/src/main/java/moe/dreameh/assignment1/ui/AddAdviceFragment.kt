@@ -1,19 +1,16 @@
 package moe.dreameh.assignment1.ui
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
+
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.add_advice_fragment.*
 import moe.dreameh.assignment1.Advice
 import moe.dreameh.assignment1.R
@@ -26,10 +23,8 @@ class AddAdviceFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Log.i("AddAdviceFragment", "Activated")
-        val rootView = inflater.inflate(R.layout.add_advice_fragment, container, false)
 
-        return rootView
+        return inflater.inflate(R.layout.add_advice_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,11 +34,11 @@ class AddAdviceFragment : Fragment() {
             button_cancel.isEnabled = false
         }
 
-        Log.i("AddAdviceFragment", "onActivityCreated")
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        // Disabling the "CANCEL" button for when it's not in portrait mode.
         if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
             button_cancel.setOnClickListener {
                 Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
@@ -51,7 +46,7 @@ class AddAdviceFragment : Fragment() {
                         Toast.LENGTH_LONG).show()
             }
         }
-
+        // Clicklistener for the "OK" button
         button_create.setOnClickListener {
             when {
                 enter_name.text.isEmpty() -> enter_name.error = "Field cannot be left blank."
@@ -64,13 +59,14 @@ class AddAdviceFragment : Fragment() {
                             enter_content.text.toString()))
 
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
+                    // Making sure that it will only navigate when the orientation is in portrait mode.
                     if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
                         Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
                     }
                 }
             }
         }
-
+        // Setting up the listener for the category_spinner
         category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 category[0] = parent?.getItemAtPosition(position).toString()
@@ -80,7 +76,7 @@ class AddAdviceFragment : Fragment() {
                 // Nothing will be added here.
             }
         }
-
+        // Adding all the items from "categories" string array to the category spinner
         ArrayAdapter.createFromResource(
                 context!!,
                 R.array.add_categories,
