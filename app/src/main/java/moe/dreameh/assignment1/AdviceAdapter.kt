@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.advice_list_row.view.*
 class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val author = view.author
-            val content = view.content
-            val category = view.category
+        val author = view.author
+        val content = view.content
+        val category = view.category
     }
 
     // Essentially set the XML Layout advice_list_row as the layout for a "row"

@@ -69,7 +69,7 @@ class StartFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, views: View?, position: Int, id: Long) {
                 // Getting the category spinner item and checking if it's related to "All" or the rest of them.
-                when(parent?.getItemAtPosition(position).toString()) {
+                when (parent?.getItemAtPosition(position).toString()) {
                     "All" -> recycler_view.adapter = AdviceAdapter(viewModel.getAdvices().value!!)
                     else -> {
                         recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent?.getItemAtPosition(position).toString()) as MutableList<Advice>)
@@ -99,7 +99,7 @@ class StartFragment : Fragment() {
             * if the size of this fragment's viewModel is less than the size of the observable one
             * add the latest to the mix.
              */
-            if(viewModel.getAdvices().value!!.size < it.size)
+            if (viewModel.getAdvices().value!!.size < it.size)
                 viewModel.addNewAdvice(it[it.size])
         })
     }

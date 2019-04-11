@@ -12,7 +12,7 @@
         <action
             android:id="@+id/action_startFragment_to_addAdviceFragment"
             app:destination="@id/addAdviceFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"/>
+            app:enterAnim="@anim/nav_default_enter_anim" />
     </fragment>
 
     <fragment
@@ -24,6 +24,6 @@
             android:id="@+id/action_addAdviceFragment_to_startFragment"
             app:destination="@id/startFragment"
             app:popUpTo="@+id/startFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

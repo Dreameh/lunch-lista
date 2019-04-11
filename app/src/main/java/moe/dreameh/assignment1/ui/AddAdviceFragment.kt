@@ -30,7 +30,7 @@ class AddAdviceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             button_cancel.isEnabled = false
         }
 
@@ -39,7 +39,7 @@ class AddAdviceFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         // Disabling the "CANCEL" button for when it's not in portrait mode.
-        if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
             button_cancel.setOnClickListener {
                 Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
                 Toast.makeText(context, "No advice was added.",
@@ -60,7 +60,7 @@ class AddAdviceFragment : Fragment() {
 
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
                     // Making sure that it will only navigate when the orientation is in portrait mode.
-                    if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
                         Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
                     }
                 }
