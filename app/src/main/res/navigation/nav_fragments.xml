@@ -8,19 +8,22 @@
         android:id="@+id/startFragment"
         android:name="moe.dreameh.assignment1.ui.StartFragment"
         android:label="start_fragment"
-        tools:layout="@layout/start_fragment" >
+        tools:layout="@layout/start_fragment">
         <action
             android:id="@+id/action_startFragment_to_addAdviceFragment"
-            app:destination="@id/addAdviceFragment" />
+            app:destination="@id/addAdviceFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"/>
     </fragment>
 
     <fragment
         android:id="@+id/addAdviceFragment"
         android:name="moe.dreameh.assignment1.ui.AddAdviceFragment"
         android:label="add_advice_fragment"
-        tools:layout="@layout/add_advice_fragment" >
+        tools:layout="@layout/add_advice_fragment">
         <action
             android:id="@+id/action_addAdviceFragment_to_startFragment"
-            app:destination="@id/startFragment" />
+            app:destination="@id/startFragment"
+            app:popUpTo="@+id/startFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

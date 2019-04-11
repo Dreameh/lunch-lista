@@ -5,43 +5,41 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.activity_add_advice.*
-import kotlinx.android.synthetic.main.advice_list_row.*
+import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.add_advice_fragment.*
 import moe.dreameh.assignment1.Advice
-
 import moe.dreameh.assignment1.R
 
 class AddAdviceFragment : Fragment() {
 
-    private var viewModel: SharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+
+    private lateinit var viewModel: SharedViewModel
+    private val category = arrayOfNulls<String>(1)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.i("AddAdviceFragment", "Activated")
         val rootView = inflater.inflate(R.layout.add_advice_fragment, container, false)
-        val category = arrayOfNulls<String>(1)
 
-        setupCategorySpinner(rootView.context)
+        return rootView
+    }
 
-        category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                category[0] = parent.getItemAtPosition(position).toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Nothing will be added here.
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.i("AddAdviceFragment", "onActivityCreated")
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         button_cancel.setOnClickListener {
-            Navigation.findNavController(rootView).navigate(R.id.action_addAdviceFragment_to_startFragment)
+            Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
             Toast.makeText(context, "No advice was added.",
                     Toast.LENGTH_LONG).show()
         }
@@ -59,27 +57,28 @@ class AddAdviceFragment : Fragment() {
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
                 }
             }
-            Navigation.createNavigateOnClickListener(R.id.action_addAdviceFragment_to_startFragment)
+            Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
         }
-        return rootView
-    }
 
-    private fun setupCategorySpinner(context: Context) {
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                category[0] = parent.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Nothing will be added here.
+            }
+        }
+
         ArrayAdapter.createFromResource(
                 context,
-                R.array.categories,
+                R.array.add_categories,
                 android.R.layout.simple_spinner_item).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             category_spinner.adapter = adapter
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
 }

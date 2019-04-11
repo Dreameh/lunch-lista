@@ -5,15 +5,9 @@
     app:showAsAction="ifRoom">
 
     <item
-        android:id="@+id/all_menu"
-        android:title="@string/all" />
+        android:id="@+id/settings_menu"
+        android:title="@string/settings" />
     <item
-        android:id="@+id/lifestyle_menu"
-        android:title="@string/lifestyle" />
-    <item
-        android:id="@+id/tech_menu"
-        android:title="@string/technology" />
-    <item
-        android:id="@+id/misc_menu"
-        android:title="@string/miscellaneous" />
+        android:id="@+id/about_menu"
+        android:title="@string/about" />
 </menu>
