@@ -55,9 +55,9 @@ class AddAdviceFragment : Fragment() {
                             enter_content.text.toString()))
 
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
+                    Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
                 }
             }
-            Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
         }
 
         category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
