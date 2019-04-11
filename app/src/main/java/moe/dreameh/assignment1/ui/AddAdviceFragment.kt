@@ -3,6 +3,7 @@ package moe.dreameh.assignment1.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -33,16 +34,24 @@ class AddAdviceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            button_cancel.isEnabled = false
+        }
+
         Log.i("AddAdviceFragment", "onActivityCreated")
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        button_cancel.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
-            Toast.makeText(context, "No advice was added.",
-                    Toast.LENGTH_LONG).show()
+        if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            button_cancel.setOnClickListener {
+                Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
+                Toast.makeText(context, "No advice was added.",
+                        Toast.LENGTH_LONG).show()
+            }
         }
+
         button_create.setOnClickListener {
             when {
                 enter_name.text.isEmpty() -> enter_name.error = "Field cannot be left blank."
@@ -55,14 +64,16 @@ class AddAdviceFragment : Fragment() {
                             enter_content.text.toString()))
 
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
-                    Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
+                    if(activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        Navigation.findNavController(it).navigate(R.id.action_addAdviceFragment_to_startFragment)
+                    }
                 }
             }
         }
 
         category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                category[0] = parent.getItemAtPosition(position).toString()
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                category[0] = parent?.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -71,7 +82,7 @@ class AddAdviceFragment : Fragment() {
         }
 
         ArrayAdapter.createFromResource(
-                context,
+                context!!,
                 R.array.add_categories,
                 android.R.layout.simple_spinner_item).also { adapter ->
             // Specify the layout to use when the list of choices appears

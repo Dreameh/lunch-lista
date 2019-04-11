@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment1"
-        android:name="moe.dreameh.assignment1.ui.startFragment"
+        android:name="moe.dreameh.assignment1.ui.StartFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
 
@@ -29,9 +29,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/fragment1"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

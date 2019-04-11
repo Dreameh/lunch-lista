@@ -1,5 +1,6 @@
 package moe.dreameh.assignment1.ui
 
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,7 +43,6 @@ class StartFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         // Initialize LinearLayoutManager
         viewManager = LinearLayoutManager(context)
 
@@ -57,7 +57,7 @@ class StartFragment : Fragment() {
 
         // Setting up categories spinner
         ArrayAdapter.createFromResource(
-                context,
+                context!!,
                 R.array.categories,
                 android.R.layout.simple_spinner_item).also { adapter ->
 
@@ -67,23 +67,27 @@ class StartFragment : Fragment() {
         }
         // Using the spinner to swap adapters.
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, views: View?, position: Int, id: Long) {
                 // Getting the category spinner item and checking if it's related to "All" or the rest of them.
-                if (parent.getItemAtPosition(position).toString() == "All") {
+                if (parent?.getItemAtPosition(position).toString() == "All") {
                     recycler_view.adapter = AdviceAdapter(viewModel.getAdvices().value!!)
                 } else {
-                    recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent.getItemAtPosition(position).toString()) as MutableList<Advice>)
+                    recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent?.getItemAtPosition(position).toString()) as MutableList<Advice>)
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Nothing will be added here.
             }
         }
-
-        fab_button.setOnClickListener {
-            view!!.findNavController().navigate(R.id.action_startFragment_to_addAdviceFragment)
+        if(activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
+            fab_button.setOnClickListener {
+                it.findNavController().navigate(R.id.action_startFragment_to_addAdviceFragment)
+            }
+        } else {
+            fab_button.hide()
         }
+
     }
 
     override fun onResume() {

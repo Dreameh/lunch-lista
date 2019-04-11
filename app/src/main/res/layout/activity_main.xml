@@ -7,9 +7,6 @@
     tools:context=".MainActivity"
     android:background="@color/background">
 
-
-
-
     <fragment
         android:id="@+id/nav_fragments_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -18,7 +15,5 @@
         android:layout_marginTop="20sp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_fragments" />
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
