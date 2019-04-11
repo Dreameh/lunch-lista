@@ -40,4 +40,10 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView
         }
         return 0
     }
+
+    fun removeAt(position: Int) {
+        adviceList?.removeAt(position)
+        notifyItemRemoved(position)
+
+    }
 }

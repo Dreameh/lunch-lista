@@ -32,9 +32,9 @@ class SharedViewModel : ViewModel() {
         return adviceList
     }
 
-    fun addNewAdvice(advice: Advice) {
-        adviceList.value?.add(advice)
-    }
+    fun addNewAdvice(advice: Advice) = adviceList.value?.add(advice)
+
+    fun deleteAdvice(id: Int) = adviceList.value?.removeAt(id)
 
     fun filterAdvice(category: String) = list.filter { it.category == category }
 }

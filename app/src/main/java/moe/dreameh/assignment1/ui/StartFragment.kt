@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.start_fragment.*
@@ -46,6 +47,8 @@ class StartFragment : Fragment() {
         // Initialize LinearLayoutManager
         viewManager = LinearLayoutManager(context)
 
+
+
         recycler_view.apply {
             // Improve performance for the recyclerview
             setHasFixedSize(true)
@@ -54,6 +57,27 @@ class StartFragment : Fragment() {
             // Set adapter
             adapter = viewAdapter
         }
+        // Setting up swiping functionality
+        val swipeHandler =  object : SwipeToDeleteCallback(this.context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = recycler_view.adapter as AdviceAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(recycler_view)
+
+        viewModel.getAdvices().observe(this, Observer<MutableList<Advice>> {
+            /*
+            * if the size of this fragment's viewModel is less than the size of the observable one
+            * add the latest to the mix.
+             */
+            if (viewModel.getAdvices().value!!.size < it.size)
+                viewModel.addNewAdvice(it[it.size])
+            viewAdapter.notifyDataSetChanged()
+        })
+
 
         // Setting up categories spinner
         ArrayAdapter.createFromResource(
@@ -91,17 +115,4 @@ class StartFragment : Fragment() {
             else -> fab_button.hide()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAdvices().observe(this, Observer<MutableList<Advice>> {
-            /*
-            * if the size of this fragment's viewModel is less than the size of the observable one
-            * add the latest to the mix.
-             */
-            if (viewModel.getAdvices().value!!.size < it.size)
-                viewModel.addNewAdvice(it[it.size])
-        })
-    }
-
 }
