@@ -29,14 +29,11 @@ class StartFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Log.i("StartFragment", "Activated")
         val rootView = inflater.inflate(R.layout.start_fragment, container, false)
         // Re-initialize viewModel taking the instance from the Activity
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
-        // get objects to the recyclerView
-        viewAdapter = AdviceAdapter(viewModel.getAdvices().value)
 
         return rootView
     }
@@ -47,16 +44,6 @@ class StartFragment : Fragment() {
         // Initialize LinearLayoutManager
         viewManager = LinearLayoutManager(context)
 
-
-
-        recycler_view.apply {
-            // Improve performance for the recyclerview
-            setHasFixedSize(true)
-            // Apply the layoutManager for the recyclerView
-            layoutManager = viewManager
-            // Set adapter
-            adapter = viewAdapter
-        }
         // Setting up swiping functionality
         val swipeHandler =  object : SwipeToDeleteCallback(this.context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -69,13 +56,27 @@ class StartFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(recycler_view)
 
         viewModel.getAdvices().observe(this, Observer<MutableList<Advice>> {
+
+            // get objects to the recyclerView
+            viewAdapter = AdviceAdapter(it)
             /*
-            * if the size of this fragment's viewModel is less than the size of the observable one
+            *  if the size of this fragment's viewModel is less than the size of the observable one
             * add the latest to the mix.
-             */
+            */
             if (viewModel.getAdvices().value!!.size < it.size)
                 viewModel.addNewAdvice(it[it.size])
-            viewAdapter.notifyDataSetChanged()
+                viewAdapter.notifyItemInserted(it.size)
+
+            recycler_view.apply {
+                // Improve performance for the recyclerview
+                setHasFixedSize(true)
+                // Apply the layoutManager for the recyclerView
+                layoutManager = viewManager
+                // Set adapter
+                adapter = viewAdapter
+                // Doing a switcherooo.
+
+            }
         })
 
 

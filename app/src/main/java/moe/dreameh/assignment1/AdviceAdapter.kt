@@ -34,12 +34,7 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView
     }
 
     //Get size of advicelist
-    override fun getItemCount(): Int {
-        if (adviceList != null) {
-            return adviceList.size
-        }
-        return 0
-    }
+    override fun getItemCount() = adviceList!!.size
 
     fun removeAt(position: Int) {
         adviceList?.removeAt(position)

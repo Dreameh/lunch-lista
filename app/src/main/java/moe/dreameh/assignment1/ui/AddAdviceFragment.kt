@@ -58,6 +58,7 @@ class AddAdviceFragment : Fragment() {
                             category[0],
                             enter_content.text.toString()))
 
+
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
                     // Making sure that it will only navigate when the orientation is in portrait mode.
                     if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
