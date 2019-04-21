@@ -34,6 +34,6 @@ A school assignment project for a Mobile App Development course
 
 
 # Current status
-  - Assignment 1 completed :heavy_check_mark:
-  - Assignment 2 completed :heavy_check_mark:
-  - Assignment 3 started
+  - [x] Assignment 1 completed ​
+  - [x] Assignment 2 completed 
+  - [ ] Assignment 3 started
