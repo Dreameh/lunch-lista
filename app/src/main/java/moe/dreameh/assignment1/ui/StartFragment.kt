@@ -74,8 +74,6 @@ class StartFragment : Fragment() {
                 layoutManager = viewManager
                 // Set adapter
                 adapter = viewAdapter
-                // Doing a switcherooo.
-
             }
         })
 

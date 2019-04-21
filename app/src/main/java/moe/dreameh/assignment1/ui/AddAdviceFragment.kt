@@ -21,6 +21,7 @@ class AddAdviceFragment : Fragment() {
     private lateinit var viewModel: SharedViewModel
     private val category = arrayOfNulls<String>(1)
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -30,9 +31,7 @@ class AddAdviceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            button_cancel.isEnabled = false
-        }
+
 
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
@@ -46,6 +45,13 @@ class AddAdviceFragment : Fragment() {
                         Toast.LENGTH_LONG).show()
             }
         }
+
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            button_cancel.isEnabled = false
+        }
+
+
+
         // Clicklistener for the "OK" button
         button_create.setOnClickListener {
             when {
@@ -57,7 +63,6 @@ class AddAdviceFragment : Fragment() {
                             enter_name.text.toString(),
                             category[0],
                             enter_content.text.toString()))
-
 
                     Toast.makeText(context, "A new advice has been" + " added.", Toast.LENGTH_LONG).show()
                     // Making sure that it will only navigate when the orientation is in portrait mode.
@@ -88,5 +93,4 @@ class AddAdviceFragment : Fragment() {
             category_spinner.adapter = adapter
         }
     }
-
 }
