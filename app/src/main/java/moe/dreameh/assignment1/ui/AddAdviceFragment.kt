@@ -1,6 +1,7 @@
 package moe.dreameh.assignment1.ui
 
 
+import android.app.Activity
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -30,7 +31,6 @@ class AddAdviceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
 
         viewModel = activity?.run {
