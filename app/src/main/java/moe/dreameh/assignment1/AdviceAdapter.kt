@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.advice_list_row.view.*
 
 
-class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
+class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val author = view.author
@@ -31,6 +31,11 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>?) : RecyclerView
             holder.category.text = this?.category
             holder.content.text = this?.content
         }
+    }
+
+    internal fun setAdvices(advices: MutableList<Advice>?) {
+        this.adviceList = advices
+        notifyDataSetChanged()
     }
 
     //Get size of advicelist

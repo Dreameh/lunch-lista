@@ -1,7 +1,6 @@
 package moe.dreameh.assignment1.ui
 
 
-import android.app.Activity
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -51,7 +50,6 @@ class AddAdviceFragment : Fragment() {
         }
 
 
-
         // Clicklistener for the "OK" button
         button_create.setOnClickListener {
             when {
@@ -59,7 +57,7 @@ class AddAdviceFragment : Fragment() {
                 enter_content.text.isEmpty() -> enter_content.error = "Field cannot be left blank."
                 else -> {
                     // Add a new advice to the obvservable adviceList
-                    viewModel.addNewAdvice(Advice(
+                    viewModel.insert(Advice(
                             enter_name.text.toString(),
                             category[0],
                             enter_content.text.toString()))

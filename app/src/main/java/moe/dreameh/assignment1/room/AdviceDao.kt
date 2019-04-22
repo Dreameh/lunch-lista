@@ -1,16 +1,14 @@
 package moe.dreameh.assignment1.room
 
-import androidx.lifecycle.MutableLiveData
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import moe.dreameh.assignment1.Advice
 
+@Dao
 interface AdviceDao {
 
     @Query("SELECT * FROM advices")
-    fun getAll(): MutableLiveData<MutableList<Advice>>
+    fun getAll(): LiveData<MutableList<Advice>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(advice: Advice)

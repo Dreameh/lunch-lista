@@ -55,7 +55,7 @@ class StartFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recycler_view)
 
-        viewModel.getAdvices().observe(this, Observer<MutableList<Advice>> {
+        viewModel.bigList.observe(this, Observer<MutableList<Advice>> {
 
             // get objects to the recyclerView
             viewAdapter = AdviceAdapter(it)
@@ -63,9 +63,7 @@ class StartFragment : Fragment() {
             *  if the size of this fragment's viewModel is less than the size of the observable one
             * add the latest to the mix.
             */
-            if (viewModel.getAdvices().value!!.size < it.size)
-                viewModel.addNewAdvice(it[it.size])
-                viewAdapter.notifyItemInserted(it.size)
+            viewAdapter.notifyItemInserted(it.size)
 
             recycler_view.apply {
                 // Improve performance for the recyclerview
@@ -93,7 +91,7 @@ class StartFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, views: View?, position: Int, id: Long) {
                 // Getting the category spinner item and checking if it's related to "All" or the rest of them.
                 when (parent?.getItemAtPosition(position).toString()) {
-                    "All" -> recycler_view.adapter = AdviceAdapter(viewModel.getAdvices().value!!)
+                    "All" -> recycler_view.adapter = AdviceAdapter(viewModel.bigList.value!!)
                     else -> {
                         recycler_view.adapter = AdviceAdapter(viewModel.filterAdvice(parent?.getItemAtPosition(position).toString()) as MutableList<Advice>)
                     }

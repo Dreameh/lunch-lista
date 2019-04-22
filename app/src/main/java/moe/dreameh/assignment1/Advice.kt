@@ -6,11 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "advices")
 data class Advice(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int?,
         @ColumnInfo(name = "author")
         val author: String?,
         @ColumnInfo(name = "category")
         val category: String?,
         @ColumnInfo(name ="content")
-        val content: String?)
+        val content: String?
+){
+    @PrimaryKey(autoGenerate = true) var uid: Int? = null
+}
