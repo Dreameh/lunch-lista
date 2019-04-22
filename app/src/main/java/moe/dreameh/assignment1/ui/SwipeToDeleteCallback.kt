@@ -28,7 +28,7 @@ abstract class SwipeToDeleteCallback(context: Context?) : ItemTouchHelper.Simple
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          **/
-        if (viewHolder.adapterPosition == 0) return 0
+        //if (viewHolder.adapterPosition == 0) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 

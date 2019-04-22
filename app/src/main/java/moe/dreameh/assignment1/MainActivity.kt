@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.about_menu -> {
+                startActivity(Intent(this@MainActivity, AboutActivity::class.java))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
