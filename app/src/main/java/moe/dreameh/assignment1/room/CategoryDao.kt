@@ -7,14 +7,16 @@ import androidx.room.*
 @Dao
 interface CategoryDao {
 
-    @Query("SELECT * FROM categories")
-    fun getAll(): MutableList<Category>
+    // Room executes all queries on a separate thread.
+    // Observed LiveData will notify the observer when the data has changed.
+    @Query("SELECT * FROM categories ORDER BY name ASC")
+    fun getAll(): LiveData<MutableList<Category>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(category: Category)
+    @Insert
+    fun insert(vararg category: Category)
 
     @Delete
-    fun delete(category: Category)
+    fun delete(vararg category: Category)
 
     @Query("DELETE FROM categories")
     fun deleteAll()

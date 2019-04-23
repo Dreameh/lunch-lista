@@ -11,10 +11,10 @@ interface AdviceDao {
     fun getAll(): LiveData<MutableList<Advice>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(advice: Advice)
+    fun insert(vararg advice: Advice)
 
     @Delete
-    fun delete(advice: Advice)
+    fun delete(vararg advice: Advice)
 
     @Query("DELETE FROM advices")
     fun deleteAll()

@@ -44,12 +44,14 @@ class SettingsActivity : AppCompatActivity() {
             val authorTitle = EditTextPreference(context)
             authorTitle.key = "author"
             authorTitle.title = "Author Name"
-            authorTitle.summary = "Enter Author Name"
+            authorTitle.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+            authorTitle.dialogTitle = "Author"
 
             val categoryList = ListPreference(context)
             categoryList.key = "list"
             categoryList.title = "Default Category"
-            categoryList.summary = categoryList.value
+            categoryList.dialogTitle = "Categories"
+            categoryList.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             categoryList.entries = categoryModel.fetchAllCategories().toTypedArray()
             categoryList.entryValues = categoryModel.fetchAllCategories().toTypedArray()
 

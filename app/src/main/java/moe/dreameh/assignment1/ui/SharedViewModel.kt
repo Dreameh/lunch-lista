@@ -33,7 +33,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     init {
-        val adviceDao = AdviceDatabase.getDatabase(application).adviceDao()
+        val adviceDao = AdviceDatabase.getDatabase(application, scope).adviceDao()
 
         repository = AdviceRepository(adviceDao)
         bigList = repository.allAdvices

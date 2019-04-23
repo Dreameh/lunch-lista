@@ -2,6 +2,7 @@ package moe.dreameh.assignment1.ui
 
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -13,10 +14,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.add_advice_fragment.*
+import kotlinx.android.synthetic.main.content_about.*
 import moe.dreameh.assignment1.Advice
 import moe.dreameh.assignment1.R
 import moe.dreameh.assignment1.room.AdviceDatabase
@@ -47,13 +52,6 @@ class AddAdviceFragment : Fragment() {
             ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        Log.v("VITTU!", categoryModel.size().toString())
-        Log.v("VITTU!", categoryModel.size().toString())
-        Log.v("VITTU!", categoryModel.size().toString())
-        Log.v("VITTU!", categoryModel.size().toString())
-        Log.v("VITTU!", categoryModel.size().toString())
-        Log.v("VITTU!", categoryModel.size().toString())
-
         // Disabling the "CANCEL" button for when it's not in portrait mode.
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
             button_cancel.setOnClickListener {
@@ -67,15 +65,26 @@ class AddAdviceFragment : Fragment() {
             button_cancel.isEnabled = false
         }
 
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        var currentValue: String? = sharedPreferences.getString("author", "Not Set")
+
+        if(!currentValue.isNullOrEmpty()) {
+            enter_name.isVisible = false
+            enter_name_title.isVisible = false
+        } else {
+            enter_name.isVisible = true
+            enter_name_title.isVisible = true
+        }
+
+
         // Clicklistener for the "OK" button
         button_create.setOnClickListener {
             when {
-                enter_name.text.isEmpty() -> enter_name.error = "Field cannot be left blank."
                 enter_content.text.isEmpty() -> enter_content.error = "Field cannot be left blank."
                 else -> {
                     // Add a new advice to the obvservable adviceList
                     viewModel.insert(Advice(
-                            enter_name.text.toString(),
+                            currentValue,
                             category[0],
                             enter_content.text.toString()))
 

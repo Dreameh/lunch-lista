@@ -20,13 +20,15 @@
             android:layout_margin="8sp"
             android:layout_weight="1"
             android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/content_panel">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="@string/author_name" />
+                android:text="@string/author_name"
+                android:id="@+id/enter_name_title"/>
 
             <EditText
                 android:id="@+id/enter_name"

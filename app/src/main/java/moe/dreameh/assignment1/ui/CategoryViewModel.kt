@@ -1,6 +1,7 @@
 package moe.dreameh.assignment1.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moe.dreameh.assignment1.Category
 import moe.dreameh.assignment1.room.AdviceDatabase
+import moe.dreameh.assignment1.room.AdviceDatabase.Companion.populateCategories
 import moe.dreameh.assignment1.room.CategoryRepository
 import kotlin.coroutines.CoroutineContext
 
@@ -19,24 +21,16 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     private val scope = CoroutineScope(coroutineContext)
 
     private val catRepository: CategoryRepository
-    private var categories: MutableList<Category> = ArrayList()
+    private var categories: LiveData<MutableList<Category>>
     private var categoryList: List<Category> = ArrayList()
-    private var number: Int = 0
 
     init {
-        val categoryDao = AdviceDatabase.getDatabase(application).categoryDao()
+        val categoryDao = AdviceDatabase.getDatabase(application, scope).categoryDao()
         catRepository = CategoryRepository(categoryDao)
-        populateCategories()
-    }
+        categories = catRepository.allCategories
 
-    private fun loadCategories() = scope.launch(Dispatchers.IO) {
-        categories = catRepository.getAll()
-    }
-
-    private fun populateCategories() = scope.launch(Dispatchers.IO) {
-        catRepository.insert(Category(1, "Lifestyle"))
-        catRepository.insert(Category(2, "Technology"))
-        catRepository.insert(Category(3, "Miscellaneous"))
+        Log.v("CategoryDao", categoryDao.getAll().value.toString())
+        Log.v("Helvete: ", categories.value.toString())
     }
 
     fun fetchAllCategories(): MutableList<String> {
@@ -47,5 +41,8 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
         return fetchedList
     }
 
-    fun size() = categories.size
+    override fun onCleared() {
+        super.onCleared()
+        parentJob.cancel()
+    }
 }
