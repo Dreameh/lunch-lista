@@ -25,6 +25,7 @@ class AddAdviceFragment : Fragment() {
 
 
     private lateinit var viewModel: SharedViewModel
+    private lateinit var categoryModel: CategoryViewModel
     private val category = arrayOfNulls<String>(1)
 
 
@@ -38,10 +39,20 @@ class AddAdviceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        categoryModel = activity?.run {
+            ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        Log.v("VITTU!", categoryModel.size().toString())
+        Log.v("VITTU!", categoryModel.size().toString())
+        Log.v("VITTU!", categoryModel.size().toString())
+        Log.v("VITTU!", categoryModel.size().toString())
+        Log.v("VITTU!", categoryModel.size().toString())
+        Log.v("VITTU!", categoryModel.size().toString())
 
         // Disabling the "CANCEL" button for when it's not in portrait mode.
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -88,14 +99,14 @@ class AddAdviceFragment : Fragment() {
         }
         // Adding all the items from "categories" string array to the category spinner
         Log.i("viewModel categories", ": Checking")
-        for(test: String in viewModel.fetchAllCategories()) {
+        for(test: String in categoryModel.fetchAllCategories()) {
             Log.i("CategoryItem: ", test)
         }
 
         ArrayAdapter(
                 context!!,
                 android.R.layout.simple_spinner_item,
-                viewModel.fetchAllCategories()).also { adapter ->
+                categoryModel.fetchAllCategories()).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import moe.dreameh.assignment1.Advice
 import moe.dreameh.assignment1.Category
 
-@Database(entities = [Advice::class, Category::class], version = 2)
+@Database(entities = arrayOf(Advice::class, Category::class), version = 1)
 abstract class AdviceDatabase : RoomDatabase() {
     abstract fun adviceDao(): AdviceDao
     abstract fun categoryDao(): CategoryDao
@@ -27,8 +27,7 @@ abstract class AdviceDatabase : RoomDatabase() {
                         context.applicationContext,
                         AdviceDatabase::class.java,
                         "Advice_database"
-                )
-                        .fallbackToDestructiveMigration()
+                ).fallbackToDestructiveMigration()
                         .build()
                 INSTANCE = instance
                 return instance

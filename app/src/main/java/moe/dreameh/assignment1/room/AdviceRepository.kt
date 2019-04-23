@@ -20,5 +20,4 @@ class AdviceRepository(private val adviceDao: AdviceDao) {
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun deleteAll(): Unit = adviceDao.deleteAll()
-
 }

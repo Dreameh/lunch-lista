@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.*
+import moe.dreameh.assignment1.ui.CategoryViewModel
 import moe.dreameh.assignment1.ui.SharedViewModel
 
 class SettingsActivity : AppCompatActivity() {
@@ -28,12 +29,12 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
-        private lateinit var viewModel: SharedViewModel
+        private lateinit var categoryModel: CategoryViewModel
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             //setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            viewModel = activity?.run {
-                ViewModelProviders.of(this).get(SharedViewModel::class.java)
+            categoryModel = activity?.run {
+                ViewModelProviders.of(this).get(CategoryViewModel::class.java)
             } ?: throw Exception("Invalid Activity")
 
             val context = preferenceManager.context
@@ -46,10 +47,11 @@ class SettingsActivity : AppCompatActivity() {
             authorTitle.summary = "Enter Author Name"
 
             val categoryList = ListPreference(context)
+            categoryList.key = "list"
             categoryList.title = "Default Category"
             categoryList.summary = categoryList.value
-            categoryList.entries = viewModel.fetchAllCategories().toTypedArray()
-            categoryList.entryValues = viewModel.fetchAllCategories().toTypedArray()
+            categoryList.entries = categoryModel.fetchAllCategories().toTypedArray()
+            categoryList.entryValues = categoryModel.fetchAllCategories().toTypedArray()
 
             val basicsCategory = PreferenceCategory(context)
             basicsCategory.key = "basics"

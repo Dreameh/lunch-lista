@@ -8,7 +8,7 @@ import androidx.room.*
 interface CategoryDao {
 
     @Query("SELECT * FROM categories")
-    fun getAll(): LiveData<List<Category>>
+    fun getAll(): MutableList<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: Category)
@@ -16,9 +16,7 @@ interface CategoryDao {
     @Delete
     fun delete(category: Category)
 
-    @Query("SELECT name FROM categories WHERE id = :id")
-    fun get(id: Int): String
-
     @Query("DELETE FROM categories")
     fun deleteAll()
+
 }
