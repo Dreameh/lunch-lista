@@ -10,7 +10,7 @@ interface CategoryDao {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     @Query("SELECT * FROM categories ORDER BY name ASC")
-    fun getAll(): LiveData<MutableList<Category>>
+    fun getAll(): List<Category>
 
     @Insert
     fun insert(vararg category: Category)
@@ -21,4 +21,6 @@ interface CategoryDao {
     @Query("DELETE FROM categories")
     fun deleteAll()
 
+    @Query("SELECT name FROM categories")
+    fun getAllNames(): List<String>
 }

@@ -8,7 +8,10 @@ import moe.dreameh.assignment1.Category
 class CategoryRepository(private val categoryDao: CategoryDao) {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    val allCategories: LiveData<MutableList<Category>> = categoryDao.getAll()
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getAllNames(): List<String> = categoryDao.getAllNames()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

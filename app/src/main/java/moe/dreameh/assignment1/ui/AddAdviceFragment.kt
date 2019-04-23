@@ -66,7 +66,8 @@ class AddAdviceFragment : Fragment() {
         }
 
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        var currentValue: String? = sharedPreferences.getString("author", "Not Set")
+        val currentValue: String? = sharedPreferences.getString("author", "Not Set")
+        val selectedItem: String? = sharedPreferences.getString("list", "")
 
         if(!currentValue.isNullOrEmpty()) {
             enter_name.isVisible = false
@@ -108,18 +109,21 @@ class AddAdviceFragment : Fragment() {
         }
         // Adding all the items from "categories" string array to the category spinner
         Log.i("viewModel categories", ": Checking")
-        for(test: String in categoryModel.fetchAllCategories()) {
+        for(test: String in categoryModel.fetchAllNames()) {
             Log.i("CategoryItem: ", test)
         }
 
         ArrayAdapter(
                 context!!,
                 android.R.layout.simple_spinner_item,
-                categoryModel.fetchAllCategories()).also { adapter ->
+                categoryModel.fetchAllNames()).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             category_spinner.adapter = adapter
+
+            category_spinner.setSelection(categoryModel.fetchAllNames().indexOf(selectedItem))
         }
     }
+
 }

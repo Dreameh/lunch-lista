@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import moe.dreameh.assignment1.Category
 import moe.dreameh.assignment1.room.AdviceDatabase
 import moe.dreameh.assignment1.room.AdviceDatabase.Companion.populateCategories
+import moe.dreameh.assignment1.room.CategoryDao
 import moe.dreameh.assignment1.room.CategoryRepository
 import kotlin.coroutines.CoroutineContext
 
@@ -21,25 +22,22 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     private val scope = CoroutineScope(coroutineContext)
 
     private val catRepository: CategoryRepository
-    private var categories: LiveData<MutableList<Category>>
-    private var categoryList: List<Category> = ArrayList()
+    private var nameList: MutableList<String> = ArrayList()
 
     init {
         val categoryDao = AdviceDatabase.getDatabase(application, scope).categoryDao()
         catRepository = CategoryRepository(categoryDao)
-        categories = catRepository.allCategories
+        setAllCategoryNames()
 
-        Log.v("CategoryDao", categoryDao.getAll().value.toString())
-        Log.v("Helvete: ", categories.value.toString())
+        Log.v("CategoryDao", categoryDao.toString())
     }
 
-    fun fetchAllCategories(): MutableList<String> {
-        val fetchedList: MutableList<String> = ArrayList()
-        for (item: Category in categoryList) {
-            item.let { fetchedList.add(it.name!!) }
-        }
-        return fetchedList
+    private fun setAllCategoryNames() = scope.launch(Dispatchers.IO) {
+        nameList.addAll(catRepository.getAllNames())
     }
+
+    fun fetchAllNames(): MutableList<String> = nameList
+
 
     override fun onCleared() {
         super.onCleared()

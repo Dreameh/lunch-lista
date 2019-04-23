@@ -7,15 +7,18 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import moe.dreameh.assignment1.room.AdviceDatabase
 
 
 class MainActivity : AppCompatActivity() {
+    private var adviceDatabase: AdviceDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val tb: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(tb)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -45,7 +45,7 @@ abstract class AdviceDatabase : RoomDatabase() {
 
                 INSTANCE?.let { database ->
                     scope.launch(Dispatchers.IO) {
-                        populateAdvices(database.adviceDao())
+                        //populateAdvices(database.adviceDao())
                         populateCategories(database.categoryDao())
                     }
                 }
@@ -54,7 +54,6 @@ abstract class AdviceDatabase : RoomDatabase() {
 
         fun populateAdvices(adviceDao: AdviceDao) {
             adviceDao.deleteAll()
-
             adviceDao.insert(Advice(
                     "Han Kolo",
                     "Lifestyle",
