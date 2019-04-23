@@ -33,11 +33,6 @@ class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView
         }
     }
 
-    internal fun setAdvices(advices: MutableList<Advice>?) {
-        this.adviceList = advices
-        notifyDataSetChanged()
-    }
-
     //Get size of advicelist
     override fun getItemCount() = adviceList!!.size
 

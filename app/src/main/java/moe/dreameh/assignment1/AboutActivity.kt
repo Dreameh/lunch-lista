@@ -4,8 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils
 
 import kotlinx.android.synthetic.main.activity_about.*
 
@@ -15,6 +16,12 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -23,19 +30,15 @@ class AboutActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.settings_menu -> {
-                // start settings activity
-                startActivity(Intent(this@AboutActivity, SettingsActivity::class.java))
-                return true
-            }
-            R.id.about_menu -> {
-                startActivity(Intent(this@AboutActivity, AboutActivity::class.java))
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
+    private inline fun consume(f: () -> Unit): Boolean {
+        f()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
+        R.id.settings_menu -> consume { startActivity(Intent(this, SettingsActivity::class.java)) }
+        R.id.about_menu -> consume { Toast.makeText(this, "You are already on the about page", Toast.LENGTH_SHORT).show() }
+        else -> super.onOptionsItemSelected(item)
     }
 
 }

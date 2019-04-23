@@ -31,7 +31,8 @@
         app:layout_constraintEnd_toStartOf="@+id/fragment2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30sp"/>
 
     <fragment
         android:id="@+id/fragment2"
@@ -43,6 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/fragment1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

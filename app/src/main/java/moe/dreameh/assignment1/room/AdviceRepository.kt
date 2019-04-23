@@ -9,19 +9,16 @@ class AdviceRepository(private val adviceDao: AdviceDao) {
 
     val allAdvices: LiveData<MutableList<Advice>> = adviceDao.getAll()
 
+    @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(advice: Advice) {
-        adviceDao.insert(advice)
-    }
+    suspend fun insert(advice: Advice): Unit = adviceDao.insert(advice)
 
+    @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun delete(advice: Advice) {
-        adviceDao.delete(advice)
-    }
+    suspend fun delete(advice: Advice): Unit = adviceDao.delete(advice)
 
+    @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun deleteAll() {
-        adviceDao.deleteAll()
-    }
+    suspend fun deleteAll(): Unit = adviceDao.deleteAll()
 
 }

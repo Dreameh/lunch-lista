@@ -59,10 +59,6 @@ class StartFragment : Fragment() {
 
             // get objects to the recyclerView
             viewAdapter = AdviceAdapter(it)
-            /*
-            *  if the size of this fragment's viewModel is less than the size of the observable one
-            * add the latest to the mix.
-            */
             viewAdapter.notifyItemInserted(it.size)
 
             recycler_view.apply {

@@ -5,10 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import moe.dreameh.assignment1.Advice
+import moe.dreameh.assignment1.Category
 
-@Database(entities = [Advice::class], version = 1)
+@Database(entities = [Advice::class, Category::class], version = 2)
 abstract class AdviceDatabase : RoomDatabase() {
     abstract fun adviceDao(): AdviceDao
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile
@@ -25,7 +27,9 @@ abstract class AdviceDatabase : RoomDatabase() {
                         context.applicationContext,
                         AdviceDatabase::class.java,
                         "Advice_database"
-                ).build()
+                )
+                        .fallbackToDestructiveMigration()
+                        .build()
                 INSTANCE = instance
                 return instance
             }

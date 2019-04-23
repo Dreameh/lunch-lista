@@ -11,9 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moe.dreameh.assignment1.Advice
+import moe.dreameh.assignment1.Category
 import moe.dreameh.assignment1.room.AdviceDao
 import moe.dreameh.assignment1.room.AdviceDatabase
 import moe.dreameh.assignment1.room.AdviceRepository
+import moe.dreameh.assignment1.room.CategoryRepository
 import java.util.Locale.filter
 import kotlin.coroutines.CoroutineContext
 
@@ -26,18 +28,33 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     private val repository: AdviceRepository
+    private val catRepository: CategoryRepository
     val bigList: LiveData<MutableList<Advice>>
+    private val categories: LiveData<List<Category>>
+    var categoryList: List<Category> = ArrayList()
 
     init {
         val adviceDao = AdviceDatabase.getDatabase(application).adviceDao()
+        val categoryDao = AdviceDatabase.getDatabase(application).categoryDao()
+
+        catRepository = CategoryRepository(categoryDao)
         repository = AdviceRepository(adviceDao)
+        categories = catRepository.allCategories
+
         bigList = repository.allAdvices
+        populateCategories()
+        if(categories.value.isNullOrEmpty()) {
+            populateCategories()
+        } else {
+            categoryList = categories.value!!
+        }
     }
 
     fun insert(advice: Advice) = scope.launch(Dispatchers.IO) {
         repository.insert(advice)
     }
 
+    // Debugging function, DO NOT USE
     private fun populateDB() = scope.launch(Dispatchers.IO) {
         repository.insert(Advice(
                 "Han Kolo",
@@ -57,11 +74,27 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         ))
     }
 
+    // Debugging function, DO NOT USE
     fun clearDB() = scope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }
 
     fun filterAdvice(category: String) = bigList.value?.filter { it.category == category }
+
+    fun populateCategories() = scope.launch(Dispatchers.IO) {
+        catRepository.insert(Category(1, "Lifestyle"))
+        catRepository.insert(Category(2, "Technology"))
+        catRepository.insert(Category(3, "Miscellaneous"))
+    }
+
+    fun fetchAllCategories(): List<String> {
+        var fetchedList: MutableList<String> = ArrayList()
+        for (item: Category in categoryList) {
+            item.let { fetchedList.add(it.name!!) }
+        }
+        return fetchedList
+    }
+
 
     override fun onCleared() {
         super.onCleared()

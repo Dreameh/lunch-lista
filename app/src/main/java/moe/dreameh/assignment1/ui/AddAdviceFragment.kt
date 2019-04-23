@@ -1,19 +1,25 @@
 package moe.dreameh.assignment1.ui
 
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.text.TextUtils.isEmpty
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.add_advice_fragment.*
 import moe.dreameh.assignment1.Advice
 import moe.dreameh.assignment1.R
+import moe.dreameh.assignment1.room.AdviceDatabase
 
 class AddAdviceFragment : Fragment() {
 
@@ -28,6 +34,7 @@ class AddAdviceFragment : Fragment() {
         return inflater.inflate(R.layout.add_advice_fragment, container, false)
     }
 
+    @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -48,7 +55,6 @@ class AddAdviceFragment : Fragment() {
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             button_cancel.isEnabled = false
         }
-
 
         // Clicklistener for the "OK" button
         button_create.setOnClickListener {
@@ -81,10 +87,15 @@ class AddAdviceFragment : Fragment() {
             }
         }
         // Adding all the items from "categories" string array to the category spinner
-        ArrayAdapter.createFromResource(
+        Log.i("viewModel categories", ": Checking")
+        for(test: String in viewModel.fetchAllCategories()) {
+            Log.i("CategoryItem: ", test)
+        }
+
+        ArrayAdapter(
                 context!!,
-                R.array.add_categories,
-                android.R.layout.simple_spinner_item).also { adapter ->
+                android.R.layout.simple_spinner_item,
+                viewModel.fetchAllCategories()).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner

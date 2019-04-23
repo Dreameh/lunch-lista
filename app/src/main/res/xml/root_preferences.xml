@@ -1,0 +1,21 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/basic_header">
+
+        <EditTextPreference
+            app:key="author_title"
+            app:title="@string/author_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/categories"
+            android:entryValues="@array/categories"
+            android:key="category_preference"
+            android:title="Select default category"
+            app:useSimpleSummaryProvider="true"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
