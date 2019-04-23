@@ -36,4 +36,4 @@ A school assignment project for a Mobile App Development course
 # Current status
   - [x] Assignment 1 completed ​
   - [x] Assignment 2 completed 
-  - [ ] Assignment 3 started
+  - [x] Assignment 3 completed

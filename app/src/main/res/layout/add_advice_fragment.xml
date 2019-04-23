@@ -30,17 +30,15 @@
                 android:text="@string/author_name"
                 android:id="@+id/enter_name_title"/>
 
-            <EditText
-                android:id="@+id/enter_name"
+            <TextView
+                android:id="@+id/selected_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/enter_name"
-                android:inputType="text">
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
 
-                <requestFocus />
-
-            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +67,7 @@
                 android:id="@+id/category_spinner"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
+                android:paddingBottom="30dp"
                 android:spinnerMode="dialog" />
 
             <RelativeLayout

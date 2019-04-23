@@ -52,8 +52,14 @@ class SettingsActivity : AppCompatActivity() {
             categoryList.title = "Default Category"
             categoryList.dialogTitle = "Categories"
             categoryList.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-            categoryList.entries = categoryModel.fetchAllNames().toTypedArray()
-            categoryList.entryValues = categoryModel.fetchAllNames().toTypedArray()
+
+            categoryModel.nameList.observe(this, Observer {
+                categoryList.entries = it.toTypedArray()
+                categoryList.entryValues = it.toTypedArray()
+            })
+
+
+
 
             val basicsCategory = PreferenceCategory(context)
             basicsCategory.key = "basics"

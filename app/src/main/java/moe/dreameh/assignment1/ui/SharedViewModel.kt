@@ -34,7 +34,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         val adviceDao = AdviceDatabase.getDatabase(application, scope).adviceDao()
-
         repository = AdviceRepository(adviceDao)
         bigList = repository.allAdvices
     }
@@ -50,7 +49,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 "Lifestyle",
                 "I still get a funny feeling about that old man and the kid. I'm not sure what it is about them, but they're trouble"))
 
-        repository.insert( Advice(
+        repository.insert(Advice(
                 "Obi-wan Henobi",
                 "Technology",
                 "These aren't the droids you're looking for."

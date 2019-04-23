@@ -45,13 +45,13 @@ abstract class AdviceDatabase : RoomDatabase() {
 
                 INSTANCE?.let { database ->
                     scope.launch(Dispatchers.IO) {
-                        //populateAdvices(database.adviceDao())
+                        populateAdvices(database.adviceDao())
                         populateCategories(database.categoryDao())
                     }
                 }
             }
         }
-
+        // For debugging purposes.
         fun populateAdvices(adviceDao: AdviceDao) {
             adviceDao.deleteAll()
             adviceDao.insert(Advice(

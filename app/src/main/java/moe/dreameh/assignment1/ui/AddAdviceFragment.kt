@@ -18,6 +18,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.add_advice_fragment.*
@@ -48,9 +49,7 @@ class AddAdviceFragment : Fragment() {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        categoryModel = activity?.run {
-            ViewModelProviders.of(this).get(CategoryViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        categoryModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
         // Disabling the "CANCEL" button for when it's not in portrait mode.
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -69,13 +68,7 @@ class AddAdviceFragment : Fragment() {
         val currentValue: String? = sharedPreferences.getString("author", "Not Set")
         val selectedItem: String? = sharedPreferences.getString("list", "")
 
-        if(!currentValue.isNullOrEmpty()) {
-            enter_name.isVisible = false
-            enter_name_title.isVisible = false
-        } else {
-            enter_name.isVisible = true
-            enter_name_title.isVisible = true
-        }
+        selected_name.text = currentValue
 
 
         // Clicklistener for the "OK" button
@@ -108,22 +101,20 @@ class AddAdviceFragment : Fragment() {
             }
         }
         // Adding all the items from "categories" string array to the category spinner
-        Log.i("viewModel categories", ": Checking")
-        for(test: String in categoryModel.fetchAllNames()) {
-            Log.i("CategoryItem: ", test)
-        }
+        categoryModel.nameList.observe(this, Observer {
+            ArrayAdapter(
+                    context!!,
+                    android.R.layout.simple_spinner_item,
+                    it).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                category_spinner.adapter = adapter
 
-        ArrayAdapter(
-                context!!,
-                android.R.layout.simple_spinner_item,
-                categoryModel.fetchAllNames()).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            category_spinner.adapter = adapter
+                category_spinner.setSelection(it.indexOf(selectedItem))
+            }
+        })
 
-            category_spinner.setSelection(categoryModel.fetchAllNames().indexOf(selectedItem))
-        }
     }
 
 }
