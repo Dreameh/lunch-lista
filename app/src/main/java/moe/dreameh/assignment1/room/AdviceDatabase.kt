@@ -72,6 +72,7 @@ abstract class AdviceDatabase : RoomDatabase() {
             ))
         }
 
+        // For debugging purposes.
         fun populateCategories(categoryDao: CategoryDao) {
             categoryDao.deleteAll()
 

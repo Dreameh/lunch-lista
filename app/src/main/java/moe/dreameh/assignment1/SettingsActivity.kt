@@ -64,6 +64,7 @@ class SettingsActivity : AppCompatActivity() {
             val basicsCategory = PreferenceCategory(context)
             basicsCategory.key = "basics"
             basicsCategory.title ="Basics"
+            basicsCategory.iconSpaceReserved = false
             screen.addPreference(basicsCategory)
             basicsCategory.addPreference(authorTitle)
             basicsCategory.addPreference(categoryList)

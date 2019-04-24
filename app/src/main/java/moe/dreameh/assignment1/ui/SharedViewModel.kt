@@ -43,26 +43,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // Debugging function, DO NOT USE
-    private fun populateDB() = scope.launch(Dispatchers.IO) {
-        repository.insert(Advice(
-                "Han Kolo",
-                "Lifestyle",
-                "I still get a funny feeling about that old man and the kid. I'm not sure what it is about them, but they're trouble"))
-
-        repository.insert(Advice(
-                "Obi-wan Henobi",
-                "Technology",
-                "These aren't the droids you're looking for."
-        ))
-
-        repository.insert(Advice(
-                "Darth Vaber",
-                "Miscellaneous",
-                "Impressive. Most impressive. Obi-Wan has taught you well. You have controlled your fear. Now, release your anger. Only your hatred can destroy me."
-        ))
-    }
-
-    // Debugging function, DO NOT USE
     fun clearDB() = scope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }

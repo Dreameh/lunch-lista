@@ -6,20 +6,11 @@ import moe.dreameh.assignment1.Category
 import androidx.room.*
 
 @Dao
-interface CategoryDao {
+interface CategoryDao : BaseDao<Category> {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
 
-
-    @Query("SELECT * FROM categories ORDER BY name ASC")
-    fun getAll(): List<Category>
-
-    @Insert
-    fun insert(vararg category: Category)
-
-    @Delete
-    fun delete(vararg category: Category)
 
     @Query("DELETE FROM categories")
     fun deleteAll()
