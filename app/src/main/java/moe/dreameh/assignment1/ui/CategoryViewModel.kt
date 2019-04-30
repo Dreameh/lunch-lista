@@ -28,7 +28,6 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
         nameList = catRepository.allNames
     }
 
-
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()

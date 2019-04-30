@@ -2,8 +2,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/settings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <fragment
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:name="moe.dreameh.assignment1.ui.SettingsFragment"
+        android:id="@+id/fragment_settings"
+        />
+
 </LinearLayout>

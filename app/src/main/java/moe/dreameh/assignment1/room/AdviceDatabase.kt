@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import moe.dreameh.assignment1.Advice
 import moe.dreameh.assignment1.Category
 
-@Database(entities = [Advice::class, Category::class], version = 1)
+@Database(entities = [Advice::class, Category::class], version = 2)
 abstract class AdviceDatabase : RoomDatabase() {
     abstract fun adviceDao(): AdviceDao
     abstract fun categoryDao(): CategoryDao

@@ -34,4 +34,6 @@
 
     <!-- Messages Preferences -->
     <string name="author_title">Default Author</string>
+    <string name="default_category">Default Category</string>
+    <string name="default_author">Test</string>
 </resources>

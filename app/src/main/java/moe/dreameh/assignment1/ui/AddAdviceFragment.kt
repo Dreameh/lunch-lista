@@ -66,7 +66,7 @@ class AddAdviceFragment : Fragment() {
 
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val currentValue: String? = sharedPreferences.getString("author", "Not Set")
-        val selectedItem: String? = sharedPreferences.getString("list", "")
+        val selectedItem: String? = sharedPreferences.getString("list", "Not Set")
 
         selected_name.text = currentValue
 
