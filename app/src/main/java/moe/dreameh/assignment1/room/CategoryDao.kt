@@ -11,4 +11,7 @@ interface CategoryDao : BaseDao<Category> {
 
     @Query("SELECT * FROM Category")
     fun getAllCategories(): List<Category>
+
+    @Query("DELETE FROM Category")
+    fun killItWithFire()
 }

@@ -11,22 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.start_fragment.*
 import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.AdviceAdapter
 import moe.dreameh.assignment1.R
-import moe.dreameh.assignment1.worker.MyWorker
 
 class StartFragment : Fragment() {
 
@@ -69,11 +63,6 @@ class StartFragment : Fragment() {
         createNotificationChannel()
         refresh_button.setOnClickListener {
 
-            val request = OneTimeWorkRequestBuilder<MyWorker>()
-                    .build()
-
-            val workManager: WorkManager = WorkManager.getInstance()
-            workManager.enqueue(request)
         }
 
         // Initialize LinearLayoutManager
@@ -83,7 +72,7 @@ class StartFragment : Fragment() {
 
             // get objects to the recyclerView
             viewAdapter = AdviceAdapter(it)
-            viewAdapter.notifyItemInserted(it.size)
+            viewAdapter.notifyItemInserted(0)
 
             recycler_view.apply {
                 // Improve performance for the recyclerview
@@ -96,16 +85,24 @@ class StartFragment : Fragment() {
         })
 
 
-        // Setting up categories spinner
-        ArrayAdapter.createFromResource(
-                context!!,
-                R.array.categories,
-                android.R.layout.simple_spinner_item).also { adapter ->
+        viewModel.categories.observe(this, Observer {
+            ArrayAdapter(
+                    context!!,
+                    android.R.layout.simple_spinner_item,
+                    it).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinner.adapter = adapter
 
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spinner.adapter = adapter
-        }
+                spinner.post(kotlinx.coroutines.Runnable {
+                    spinner.setSelection(viewModel.getDefaultCategoryFor())
+                })
+            }
+        })
+
+
+
         // Using the spinner to swap adapters.
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, views: View?, position: Int, id: Long) {

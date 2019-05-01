@@ -15,9 +15,7 @@ class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView
         val author = view.author
         val content = view.content
         val category = view.category
-
     }
-
     // Essentially set the XML Layout advice_list_row as the layout for a "row"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 

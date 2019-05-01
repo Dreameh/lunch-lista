@@ -3,10 +3,9 @@ package moe.dreameh.assignment1.room
 import android.app.Application
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import java.util.HashMap
+import kotlinx.coroutines.*
+import moe.dreameh.assignment1.worker.RetrofitFactory
+import retrofit2.*
 import kotlin.coroutines.CoroutineContext
 
 class AdviceRepository(application: Application) {
@@ -26,7 +25,8 @@ class AdviceRepository(application: Application) {
     init {
         adviceDao = AdviceDatabase.getDatabase(application).adviceDao()
         categoryDao = AdviceDatabase.getDatabase(application).categoryDao()
-        populateCategoriesIfNeeded()
+        fetchAll()
+        populateCategoriesIfNeeded(application)
         getNameList()
     }
 
@@ -45,36 +45,102 @@ class AdviceRepository(application: Application) {
         return categoryList[id].name
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun specialInsert(advice: Advice) {
+        adviceDao.insert(advice)
+
+    }
+
     /**
-     * Add (for now) hardcoded categories to the database
-     * Also create a cache to avoid having to repeatedly lookup category names in a new thread
+     * Running the retrofit call from here, so that it will be easy to add it to the repository.
+     * The cache and database.
      */
-    private fun populateCategoriesIfNeeded() {
-        categoryList = ArrayList()
-
+    private fun fetchAll() {
         val t = Thread {
-            val categoriesInDb = categoryDao.getAllCategories()
-
-            when {
-                categoriesInDb.isEmpty() -> {
-                    val categories = arrayOf("Lifestyle", "Technology", "Miscellaneous")
-
-                    categories.withIndex().forEach { (index, value) ->
-                        categoryList.add(Category(index, value))
-                        categoryDao.insert(Category(index, value))
-                    }
-                }
-                else -> for (category in categoriesInDb) categoryList.add(Category(category.id, category.name))
-            }
+            adviceDao.deleteAll()
         }
-
         t.start()
-        // Waiting for the thread might cause a short UI lockup during startup  but we'll live with that.
-        // For longer-running initialization tasks some kind of progress dialog might be motivated.
         try {
             t.join()
         } catch (e: InterruptedException) {
             e.printStackTrace()
+        }
+
+        val service = RetrofitFactory.makeRetrofitService()
+        CoroutineScope(Dispatchers.IO).launch {
+            val request = service.loadAdvices()
+            withContext(Dispatchers.Main) {
+                try {
+                    val response = request.await()
+                    if (response.isSuccessful) {
+                        val output: MutableList<Advice>? = response.body()
+                        val job = GlobalScope.launch {
+                            output!!.forEach {
+                                adviceDao.insert(it)
+                            }
+                        }
+                        job.join()
+                    }
+                } catch (e: HttpException) {
+                    e.printStackTrace()
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add (for now) hardcoded categories to the database
+     * Also create a cache to avoid having to repeatedly lookup category names in a new thread
+     */
+    private fun populateCategoriesIfNeeded(application: Application) {
+        categoryList = ArrayList()
+
+        val killWithNoMercyThread = Thread {
+            categoryDao.killItWithFire()
+        }
+        killWithNoMercyThread.start()
+        try {
+            killWithNoMercyThread.join()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+
+        val service = RetrofitFactory.makeRetrofitService()
+        CoroutineScope(Dispatchers.IO).launch {
+            val request = service.loadCategories()
+            withContext(Dispatchers.Main) {
+                val job2 = GlobalScope.launch {
+                    val categoriesInDb = categoryDao.getAllCategories()
+                    when {
+                        categoriesInDb.isEmpty() -> {
+                            try {
+                                val response = request.await()
+                                if (response.isSuccessful) {
+                                    val output: List<Category>? = response.body()
+                                    val job = GlobalScope.launch {
+                                        output?.forEach {
+                                            categoryList.add(Category(it.id, it.name))
+                                            categoryDao.insert(Category(it.id, it.name))
+                                        }
+                                    }
+                                    job.join()
+                                }
+                            } catch (e: HttpException) {
+                                e.printStackTrace()
+                            } catch (e: Throwable) {
+                                e.printStackTrace()
+                            }
+                        }
+                        else -> for (category in categoriesInDb) categoryList.add(Category(category.id, category.name))
+                    }
+                }
+                job2.join()
+            }
         }
     }
 
