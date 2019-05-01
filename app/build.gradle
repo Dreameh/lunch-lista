@@ -52,19 +52,27 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-alpha02'
 
     // Room dependencies
-    def room_version = "2.1.0-alpha06"
+    def room_version = "2.1.0-alpha07"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
-
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0-alpha01'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
-    testImplementation "androidx.room:room-testing:$room_version"
+    // Retrofit and stuff
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    def work_version = "2.0.1"
 
+    // (Java only)
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // Non-existent testing packages
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha05'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha05'
+    testImplementation "androidx.room:room-testing:$room_version"
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"

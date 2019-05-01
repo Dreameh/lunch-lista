@@ -1,4 +1,4 @@
-package moe.dreameh.assignment1
+package moe.dreameh.assignment1.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

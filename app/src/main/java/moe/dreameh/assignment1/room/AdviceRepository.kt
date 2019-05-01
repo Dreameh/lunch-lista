@@ -3,25 +3,31 @@ package moe.dreameh.assignment1.room
 import android.app.Application
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import moe.dreameh.assignment1.Advice
+import java.util.HashMap
 import kotlin.coroutines.CoroutineContext
 
-class AdviceRepository(private var adviceDao: AdviceDao, private var categoryDao: CategoryDao,
-                       application: Application) {
+class AdviceRepository(application: Application) {
 
+    // Coroutine tasker?
     private var parentJob = Job()
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Main
     private val scope = CoroutineScope(coroutineContext)
 
+    // Dao and cache related objects
+    private var adviceDao: AdviceDao
+    private var categoryDao: CategoryDao
+    private lateinit var categoryList: ArrayList<Category>
+    lateinit var categoryNames: LiveData<MutableList<String>>
 
     init {
-         adviceDao = AdviceDatabase.getDatabase(application, scope).adviceDao()
-         categoryDao = AdviceDatabase.getDatabase(application, scope).categoryDao()
+        adviceDao = AdviceDatabase.getDatabase(application).adviceDao()
+        categoryDao = AdviceDatabase.getDatabase(application).categoryDao()
+        populateCategoriesIfNeeded()
+        getNameList()
     }
 
     val allAdvices: LiveData<MutableList<Advice>> = adviceDao.getAll()
@@ -33,9 +39,42 @@ class AdviceRepository(private var adviceDao: AdviceDao, private var categoryDao
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun delete(advice: Advice): Unit = adviceDao.delete(advice)
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun deleteAll(): Unit = adviceDao.deleteAll()
+
+    fun getCategoryName(id: Int): String? {
+        return categoryList[id].name
+    }
+
+
+    private fun populateCategoriesIfNeeded() {
+        categoryList = ArrayList()
+
+        val t = Thread {
+            val categoriesInDb = categoryDao.getAllCategories()
+
+            when {
+                categoriesInDb.isEmpty() -> {
+                    val categories = arrayOf("Lifestyle", "Technology", "Miscellaneous")
+                    for (i in categories.indices) {
+                        categoryList[i] = Category(i, categories[i])
+                        categoryDao.insert(Category(i, categories[i]))
+                    }
+                }
+                else -> for (category in categoriesInDb) categoryList.add(Category(category.id, category.name))
+            }
+        }
+
+        t.start()
+        // Waiting for the thread might cause a short UI lockup during startup  but we'll live with that.
+        // For longer-running initialization tasks some kind of progress dialog might be motivated.
+        try {
+            t.join()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getNameList() {
+        categoryNames = categoryDao.getAllNames()
+    }
 }

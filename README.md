@@ -33,7 +33,26 @@ A school assignment project for a Mobile App Development course
 	   - a preference setting for the default category. The available choices must be read from the Room DB.
 
 
+
+## Assignment 4 - Requirements
+
+  - The application should now use a server to upload and download advices.
+  - The list of allowed categories should now be fetched from the server and stored in the local database when the application starts. The administrator may add new categories to the server at any time, but no categories will ever be removed.
+  - New advice should now be uploaded to the server, as well as stored in the local database.
+  - When the application starts the currently available advice should also be fetched from the server. Additionally, the user should be able to fetch the advice from the server at any time through some kind of refresh functionality.
+  - There should also be a possibility to *periodically* download new advice from the server. Add settings to the preference screen where you can enable/disable this feature and configure the download interval. Note that the minimum interval allowed by the OS when using the WorkManager is 15 minutes.
+  - When new advice is downloaded by the periodic service a *notification* should be shown.
+  - By tapping the notification the user should be taken to the application.
+  - The application obviously need to implement some mechanism to avoid adding the same advice multiple times to the local database when doing multiple refreshes from the server.
+  - Also try to consider the case of no network connection when trying to upload or download data.
+  - The app should utilize Retrofit for all HTTP communication.
+  - Not that the endpoint only support HTTP(cleartext) communication. The app will need to be configured accordingly.
+
+
+
+
 # Current status
   - [x] Assignment 1 completed ​
   - [x] Assignment 2 completed 
   - [x] Assignment 3 completed
+  - [ ] Assignment 4 started

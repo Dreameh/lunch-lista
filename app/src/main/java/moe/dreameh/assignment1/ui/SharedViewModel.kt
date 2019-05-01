@@ -1,23 +1,16 @@
 package moe.dreameh.assignment1.ui
 
 import android.app.Application
-import android.util.Log
-import androidx.core.view.OneShotPreDrawListener.add
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import moe.dreameh.assignment1.Advice
-import moe.dreameh.assignment1.Category
-import moe.dreameh.assignment1.room.AdviceDao
-import moe.dreameh.assignment1.room.AdviceDatabase
+import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.room.AdviceRepository
-import moe.dreameh.assignment1.room.CategoryRepository
-import java.util.Locale.filter
 import kotlin.coroutines.CoroutineContext
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,23 +21,19 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val scope = CoroutineScope(coroutineContext)
 
 
-    private val repository: AdviceRepository
     val bigList: LiveData<MutableList<Advice>>
 
+    private val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication())
+    private val repository: AdviceRepository = AdviceRepository(application)
+    val categories: LiveData<MutableList<String>>
 
     init {
-        val adviceDao = AdviceDatabase.getDatabase(application, scope).adviceDao()
-        repository = AdviceRepository(adviceDao)
         bigList = repository.allAdvices
+        categories = repository.categoryNames
     }
 
     fun insert(advice: Advice) = scope.launch(Dispatchers.IO) {
         repository.insert(advice)
-    }
-
-    // Debugging function, DO NOT USE
-    fun clearDB() = scope.launch(Dispatchers.IO) {
-        repository.deleteAll()
     }
 
     fun filterAdvice(category: String) = bigList.value?.filter { it.category == category }
@@ -53,4 +42,17 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         super.onCleared()
         parentJob.cancel()
     }
+
+    fun getAuthor(): String? {
+        return pref.getString("author", "Anonymous")
+    }
+
+    fun getDefaultCategory(): String? {
+        return repository.getCategoryName(getDefaultCategoryFor())
+    }
+
+    fun getDefaultCategoryFor(): Int {
+        return repository.categoryNames.value!!.indexOf(pref.getString("list", "0"))
+    }
+
 }

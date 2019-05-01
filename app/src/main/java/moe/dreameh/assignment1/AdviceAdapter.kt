@@ -6,6 +6,7 @@ import android.view.ViewGroup
 
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.advice_list_row.view.*
+import moe.dreameh.assignment1.room.Advice
 
 
 class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView.Adapter<AdviceAdapter.MyViewHolder>() {
@@ -14,14 +15,14 @@ class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView
         val author = view.author
         val content = view.content
         val category = view.category
+
     }
 
     // Essentially set the XML Layout advice_list_row as the layout for a "row"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.advice_list_row, parent, false)
 
-        return MyViewHolder(itemView)
+        return MyViewHolder(LayoutInflater.from(parent.context)
+                .inflate(R.layout.advice_list_row, parent, false))
     }
 
     // Set ViewHolder variables to the list's item variables
@@ -31,14 +32,9 @@ class AdviceAdapter(private var adviceList: MutableList<Advice>?) : RecyclerView
             holder.category.text = this?.category
             holder.content.text = this?.content
         }
+        //notifyDataSetChanged()
     }
 
     //Get size of advicelist
     override fun getItemCount() = adviceList!!.size
-
-    fun removeAt(position: Int) {
-        adviceList?.removeAt(position)
-        notifyItemRemoved(position)
-
-    }
 }

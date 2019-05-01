@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assignment3</string>
+    <string name="app_name">Assignment4</string>
     <string name="action_settings">Settings</string>
     <string name="author_name">Author Name</string>
     <string name="enter_name">Enter Name</string>
@@ -36,4 +36,5 @@
     <string name="author_title">Default Author</string>
     <string name="default_category">Default Category</string>
     <string name="default_author">Test</string>
+    <string name="refresh_button">Refresh</string>
 </resources>

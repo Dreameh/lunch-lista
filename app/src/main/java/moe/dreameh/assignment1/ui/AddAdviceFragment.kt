@@ -2,36 +2,25 @@ package moe.dreameh.assignment1.ui
 
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.text.TextUtils.isEmpty
-import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.add_advice_fragment.*
-import kotlinx.android.synthetic.main.content_about.*
-import moe.dreameh.assignment1.Advice
+import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.R
-import moe.dreameh.assignment1.room.AdviceDatabase
 
 class AddAdviceFragment : Fragment() {
 
 
     private lateinit var viewModel: SharedViewModel
-    private lateinit var categoryModel: CategoryViewModel
     private val category = arrayOfNulls<String>(1)
 
 
@@ -49,7 +38,6 @@ class AddAdviceFragment : Fragment() {
             ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        categoryModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
         // Disabling the "CANCEL" button for when it's not in portrait mode.
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -64,21 +52,17 @@ class AddAdviceFragment : Fragment() {
             button_cancel.isEnabled = false
         }
 
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val currentValue: String? = sharedPreferences.getString("author", "Not Set")
-        val selectedItem: String? = sharedPreferences.getString("list", "Not Set")
-
-        selected_name.text = currentValue
-
-
         // Clicklistener for the "OK" button
         button_create.setOnClickListener {
             when {
                 enter_content.text.isEmpty() -> enter_content.error = "Field cannot be left blank."
+                viewModel.getAuthor().equals("Anonymous") -> {
+                    Toast.makeText(context, "Choose a name in the settings menu", Toast.LENGTH_LONG).show()
+                }
                 else -> {
                     // Add a new advice to the obvservable adviceList
                     viewModel.insert(Advice(
-                            currentValue,
+                            viewModel.getAuthor(),
                             category[0],
                             enter_content.text.toString()))
 
@@ -101,7 +85,7 @@ class AddAdviceFragment : Fragment() {
             }
         }
         // Adding all the items from "categories" string array to the category spinner
-        categoryModel.nameList.observe(this, Observer {
+        viewModel.categories.observe(this, Observer {
             ArrayAdapter(
                     context!!,
                     android.R.layout.simple_spinner_item,
@@ -111,7 +95,9 @@ class AddAdviceFragment : Fragment() {
                 // Apply the adapter to the spinner
                 category_spinner.adapter = adapter
 
-                category_spinner.setSelection(it.indexOf(selectedItem))
+                category_spinner.post(kotlinx.coroutines.Runnable {
+                    category_spinner.setSelection(viewModel.getDefaultCategoryFor())
+                })
             }
         })
 

@@ -1,13 +1,17 @@
 package moe.dreameh.assignment1.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,16 +19,44 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.start_fragment.*
-import moe.dreameh.assignment1.Advice
+import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.AdviceAdapter
 import moe.dreameh.assignment1.R
+import moe.dreameh.assignment1.worker.MyWorker
 
 class StartFragment : Fragment() {
 
     private lateinit var viewModel: SharedViewModel
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support
+        // library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "MY CHANNEL NAME"
+            val description = "MY CHANNEL DESCRIPTION"
+
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("my_channel_id", name, importance)
+            channel.description = description
+            // Register the channel with the system; you can't change
+            // the importance or other notification behaviors after this
+            val notificationManager:NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,19 +73,17 @@ class StartFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        // Initialize LinearLayoutManager
-        viewManager = LinearLayoutManager(context)
+        createNotificationChannel()
+        refresh_button.setOnClickListener {
+            val workManager: WorkManager = WorkManager.getInstance()
+            val request: OneTimeWorkRequest = OneTimeWorkRequest.Builder(MyWorker::class.java)
+                    .build()
 
-        // Setting up swiping functionality
-        val swipeHandler =  object : SwipeToDeleteCallback(this.context) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = recycler_view.adapter as AdviceAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
-            }
+            workManager.enqueue(request)
         }
 
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(recycler_view)
+        // Initialize LinearLayoutManager
+        viewManager = LinearLayoutManager(context)
 
         viewModel.bigList.observe(this, Observer<MutableList<Advice>> {
 

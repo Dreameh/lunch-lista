@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import moe.dreameh.assignment1.R
-import moe.dreameh.assignment1.room.CategoryRepository
 
 class SettingsFragment : PreferenceFragmentCompat() {
-    private lateinit var categoryModel: CategoryViewModel
+    private lateinit var viewModel: SharedViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        categoryModel = activity?.run {
-            ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -21,11 +20,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 
 
-        categoryModel.nameList.observe(this, Observer {
+        viewModel.categories.observe(this, Observer {
             list?.entries = it.toTypedArray()
             list?.entryValues = it.toTypedArray()
+            list?.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         })
-        list?.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+
     }
 
 }
