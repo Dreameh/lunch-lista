@@ -26,7 +26,7 @@ class AdviceRepository(application: Application) {
         adviceDao = AdviceDatabase.getDatabase(application).adviceDao()
         categoryDao = AdviceDatabase.getDatabase(application).categoryDao()
         fetchAll()
-        populateCategoriesIfNeeded(application)
+        populateCategoriesIfNeeded()
         getNameList()
     }
 
@@ -48,27 +48,41 @@ class AdviceRepository(application: Application) {
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun specialInsert(advice: Advice) {
-        adviceDao.insert(advice)
 
+        val service = RetrofitFactory.makeRetrofitService()
+        CoroutineScope(Dispatchers.IO).launch {
+            val addAdvice = service.addAdvice(
+                    advice.author,
+                    advice.content,
+                    advice.category)
+            withContext(Dispatchers.Main) {
+                try {
+                    val response = addAdvice.await()
+                    if(response.isSuccessful) {
+                        val job = GlobalScope.launch {
+                            adviceDao.insert(advice)
+                        }
+                        job.join()
+                    }
+                } catch(e: HttpException) {
+                    e.printStackTrace()
+                } catch(e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     /**
      * Running the retrofit call from here, so that it will be easy to add it to the repository.
      * The cache and database.
+     *
+     * Note: Using coroutines so that it can be running asynchronisly, so that the database don't complain.
      */
     private fun fetchAll() {
-        val t = Thread {
-            adviceDao.deleteAll()
-        }
-        t.start()
-        try {
-            t.join()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
         val service = RetrofitFactory.makeRetrofitService()
         CoroutineScope(Dispatchers.IO).launch {
+            doKillAdvices()
             val request = service.loadAdvices()
             withContext(Dispatchers.Main) {
                 try {
@@ -91,27 +105,22 @@ class AdviceRepository(application: Application) {
         }
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    private suspend fun doKillAdvices() {
+        deleteAll()
+    }
 
     /**
      * Add (for now) hardcoded categories to the database
      * Also create a cache to avoid having to repeatedly lookup category names in a new thread
      */
-    private fun populateCategoriesIfNeeded(application: Application) {
+    private fun populateCategoriesIfNeeded() = runBlocking {
         categoryList = ArrayList()
-
-        val killWithNoMercyThread = Thread {
-            categoryDao.killItWithFire()
-        }
-        killWithNoMercyThread.start()
-        try {
-            killWithNoMercyThread.join()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
 
         val service = RetrofitFactory.makeRetrofitService()
         CoroutineScope(Dispatchers.IO).launch {
+            doKillCategories()
             val request = service.loadCategories()
             withContext(Dispatchers.Main) {
                 val job2 = GlobalScope.launch {
@@ -143,6 +152,13 @@ class AdviceRepository(application: Application) {
             }
         }
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    private suspend fun doKillCategories() {
+        categoryDao.killItWithFire()
+    }
+
 
     private fun getNameList() {
         categoryNames = categoryDao.getAllNames()

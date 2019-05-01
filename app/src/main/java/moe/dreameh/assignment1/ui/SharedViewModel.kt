@@ -33,7 +33,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun insert(advice: Advice) = scope.launch(Dispatchers.IO) {
-        repository.insert(advice)
+        repository.specialInsert(advice)
     }
 
     fun filterAdvice(category: String) = bigList.value?.filter { it.category == category }

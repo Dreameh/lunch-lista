@@ -11,4 +11,7 @@ interface AdviceDao : BaseDao<Advice> {
 
     @Query("DELETE FROM Advice")
     fun deleteAll()
+
+    @Query("SELECT COUNT(*) FROM Advice")
+    fun countAll(): Int
 }
