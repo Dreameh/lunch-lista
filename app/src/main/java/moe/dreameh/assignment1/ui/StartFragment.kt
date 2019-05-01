@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.start_fragment.*
 import moe.dreameh.assignment1.room.Advice
@@ -51,14 +52,6 @@ class StartFragment : Fragment() {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.start_fragment, container, false)
@@ -75,10 +68,11 @@ class StartFragment : Fragment() {
 
         createNotificationChannel()
         refresh_button.setOnClickListener {
-            val workManager: WorkManager = WorkManager.getInstance()
-            val request: OneTimeWorkRequest = OneTimeWorkRequest.Builder(MyWorker::class.java)
+
+            val request = OneTimeWorkRequestBuilder<MyWorker>()
                     .build()
 
+            val workManager: WorkManager = WorkManager.getInstance()
             workManager.enqueue(request)
         }
 

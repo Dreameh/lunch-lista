@@ -45,7 +45,10 @@ class AdviceRepository(application: Application) {
         return categoryList[id].name
     }
 
-
+    /**
+     * Add (for now) hardcoded categories to the database
+     * Also create a cache to avoid having to repeatedly lookup category names in a new thread
+     */
     private fun populateCategoriesIfNeeded() {
         categoryList = ArrayList()
 
@@ -55,9 +58,10 @@ class AdviceRepository(application: Application) {
             when {
                 categoriesInDb.isEmpty() -> {
                     val categories = arrayOf("Lifestyle", "Technology", "Miscellaneous")
-                    for (i in categories.indices) {
-                        categoryList[i] = Category(i, categories[i])
-                        categoryDao.insert(Category(i, categories[i]))
+
+                    categories.withIndex().forEach { (index, value) ->
+                        categoryList.add(Category(index, value))
+                        categoryDao.insert(Category(index, value))
                     }
                 }
                 else -> for (category in categoriesInDb) categoryList.add(Category(category.id, category.name))
