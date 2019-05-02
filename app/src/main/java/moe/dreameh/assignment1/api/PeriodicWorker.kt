@@ -14,9 +14,9 @@ const val ADVICE = "ADVICE"
 
 class PeriodicWorker(appContext: Context, workerParams: WorkerParameters)
     : Worker(appContext, workerParams) {
-    var result: Int = 0
+    private var result: Int = 0
 
-    fun setWorkerResult(amount: Int) {
+    private fun setWorkerResult(amount: Int) {
         result = amount
     }
 
