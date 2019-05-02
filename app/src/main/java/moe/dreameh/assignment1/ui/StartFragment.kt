@@ -64,7 +64,6 @@ class StartFragment : Fragment() {
         refresh_button.setOnClickListener {
 
         }
-
         // Initialize LinearLayoutManager
         viewManager = LinearLayoutManager(context)
 
@@ -84,7 +83,6 @@ class StartFragment : Fragment() {
             }
         })
 
-
         viewModel.categories.observe(this, Observer {
             ArrayAdapter(
                     context!!,
@@ -100,8 +98,6 @@ class StartFragment : Fragment() {
                 })
             }
         })
-
-
 
         // Using the spinner to swap adapters.
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

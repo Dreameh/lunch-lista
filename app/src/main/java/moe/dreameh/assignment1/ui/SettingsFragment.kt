@@ -20,9 +20,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val list: ListPreference? = findPreference("default_category")
         val author = findPreference<EditTextPreference>("author")
 
-
+        // This does not seem to work all too well.
         author?.setDefaultValue("Anonymous")
-
 
         viewModel.categories.observe(this, Observer {
             list?.entries = it.toTypedArray()

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assignment4</string>
+    <string name="app_name">NiksiPirkka</string>
     <string name="action_settings">Settings</string>
     <string name="author_name">Author Name</string>
     <string name="enter_name">Enter Name</string>
@@ -10,18 +10,6 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
 
-    <string-array name="categories">
-        <item>All</item>
-        <item>Lifestyle</item>
-        <item>Technology</item>
-        <item>Miscellaneous</item>
-    </string-array>
-
-    <string-array name="add_categories">
-        <item>Lifestyle</item>
-        <item>Technology</item>
-        <item>Miscellaneous</item>
-    </string-array>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_about">About</string>
 
@@ -35,6 +23,7 @@
     <!-- Messages Preferences -->
     <string name="author_title">Default Author</string>
     <string name="default_category">Default Category</string>
-    <string name="default_author">Test</string>
+    <string name="default_author">Anonymous</string>
     <string name="refresh_button">Refresh</string>
+    <string name="default_sync">Set a time for when syncing with the server</string>
 </resources>

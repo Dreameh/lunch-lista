@@ -19,10 +19,8 @@ import moe.dreameh.assignment1.R
 
 class AddAdviceFragment : Fragment() {
 
-
     private lateinit var viewModel: SharedViewModel
     private val category = arrayOfNulls<String>(1)
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

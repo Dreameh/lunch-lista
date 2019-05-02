@@ -17,4 +17,12 @@
         app:iconSpaceReserved="false"
         />
 
+    <ListPreference
+        app:key="default_sync"
+        app:title="@string/default_sync"
+        app:defaultValue="0"
+        app:useSimpleSummaryProvider="true"
+        app:iconSpaceReserved="false"
+        />
+
 </PreferenceScreen>
