@@ -114,20 +114,17 @@ class StartFragment : Fragment() {
                 if (it != null && it.state == WorkInfo.State.SUCCEEDED) {
                     var output = it.outputData.getInt("ADVICE", 0)
 
-                    if (output > 0) {
+                    val builder = NotificationCompat.Builder(context!!, "my_channel_id")
+                            .setSmallIcon(android.R.drawable.star_on)
+                            .setContentTitle("NiksiPirkka Syncing Completed")
+                            .setContentText("found $output new advices")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    val notificationManager = NotificationManagerCompat.from(context!!)
+                    // notificationId is a unique int for each notification that you
+                    // must define
+                    notificationManager.notify(1, builder.build())
 
-                        val builder = NotificationCompat.Builder(context!!, "my_channel_id")
-                                .setSmallIcon(android.R.drawable.star_on)
-                                .setContentTitle("NiksiPirkka Syncing Completed")
-                                .setContentText("found $output new advices")
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        val notificationManager = NotificationManagerCompat.from(context!!)
-                        // notificationId is a unique int for each notification that you
-                        // must define
-                        notificationManager.notify(1, builder.build())
-
-                        viewModel.scheduledFetching()
-                    }
+                    viewModel.scheduledFetching()
                 }
             })
         })
