@@ -20,9 +20,10 @@
     <ListPreference
         app:key="default_sync"
         app:title="@string/default_sync"
-        app:defaultValue="0"
+        app:defaultValue="10"
         app:useSimpleSummaryProvider="true"
         app:iconSpaceReserved="false"
-        />
+        app:entries="@array/intervals"
+        app:entryValues="@array/intervals"/>
 
 </PreferenceScreen>

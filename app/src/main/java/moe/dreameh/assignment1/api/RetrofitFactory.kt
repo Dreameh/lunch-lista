@@ -1,4 +1,4 @@
-package moe.dreameh.assignment1.worker
+package moe.dreameh.assignment1.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package moe.dreameh.assignment1.ui
+package moe.dreameh.assignment1.room
 
 import android.app.Application
 import android.content.SharedPreferences
@@ -9,8 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import moe.dreameh.assignment1.room.Advice
-import moe.dreameh.assignment1.room.AdviceRepository
+import java.time.Duration
 import kotlin.coroutines.CoroutineContext
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
@@ -52,7 +51,15 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getDefaultCategoryFor(): Int {
-        return repository.categoryNames.value!!.indexOf(pref.getString("list", "0"))
+        return repository.categoryNames.value!!.indexOf(pref.getString("list", "0")!!)
+    }
+
+    fun scheduledFetching() = scope.launch(Dispatchers.IO) {
+        repository.fetchAll()
+    }
+
+    fun getInterval(): Long {
+        return pref.getString("default_interval", "10")!!.toLong()
     }
 
 }

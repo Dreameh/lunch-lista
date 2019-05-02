@@ -7,6 +7,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import moe.dreameh.assignment1.R
+import moe.dreameh.assignment1.room.SharedViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var viewModel: SharedViewModel
@@ -19,7 +20,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val list: ListPreference? = findPreference("default_category")
         val author = findPreference<EditTextPreference>("author")
-
         // This does not seem to work all too well.
         author?.setDefaultValue("Anonymous")
 
@@ -29,6 +29,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             list?.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             list?.setDefaultValue(0)
         })
+
+
+
 
     }
 

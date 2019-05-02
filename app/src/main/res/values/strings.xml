@@ -26,4 +26,15 @@
     <string name="default_author">Anonymous</string>
     <string name="refresh_button">Refresh</string>
     <string name="default_sync">Set a time for when syncing with the server</string>
+
+    <string-array name="intervals">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+
+
 </resources>

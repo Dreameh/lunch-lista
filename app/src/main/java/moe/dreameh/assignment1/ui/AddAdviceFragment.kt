@@ -16,6 +16,7 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.add_advice_fragment.*
 import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.R
+import moe.dreameh.assignment1.room.SharedViewModel
 
 class AddAdviceFragment : Fragment() {
 

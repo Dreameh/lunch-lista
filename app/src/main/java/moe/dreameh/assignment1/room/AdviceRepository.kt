@@ -1,16 +1,12 @@
 package moe.dreameh.assignment1.room
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import moe.dreameh.assignment1.worker.RetrofitFactory
+import moe.dreameh.assignment1.api.RetrofitFactory
 import retrofit2.*
 import kotlin.coroutines.CoroutineContext
 
@@ -52,31 +48,20 @@ class AdviceRepository(application: Application) {
         return categoryList[id].name
     }
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun specialInsert(advice: Advice) {
-
+    fun specialInsert(advice: Advice) = scope.launch(IO) {
         val service = RetrofitFactory.makeRetrofitService()
-        CoroutineScope(Dispatchers.IO).launch {
-            val addAdvice = service.addAdvice(
-                    advice.author,
-                    advice.content,
-                    advice.category)
-            withContext(Dispatchers.Main) {
-                try {
-                    val response = addAdvice.await()
-                    if (response.isSuccessful) {
-                        val job = GlobalScope.launch {
-                            adviceDao.insert(advice)
-                        }
-                        job.join()
-                    }
-                } catch (e: HttpException) {
-                    e.printStackTrace()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
+        val addAdvice = service.addAdvice(
+                advice.author, advice.content, advice.category)
+        try {
+            val response = addAdvice.await()
+            Log.d("addAdvice status: ", response.message())
+            if(response.isSuccessful) {
+                insert(advice)
             }
+        } catch (e: HttpException) {
+            e.printStackTrace()
+        } catch (e: Throwable) {
+            e.printStackTrace()
         }
     }
 
@@ -86,20 +71,23 @@ class AdviceRepository(application: Application) {
      *
      * Note: Using coroutines so that it can be running asynchronisly, so that the database don't complain.
      */
-    private fun fetchAll() = scope.launch(IO) {
+    fun fetchAll() = scope.launch(IO) {
         val service = RetrofitFactory.makeRetrofitService()
         val request = service.loadAdvices()
         try {
             val response = request.await()
+            Log.d("fetchAll status: ", response.message())
             if (response.isSuccessful) {
-                // Making sure that only new advices gets loaded, when successful.
-                // Otherwise no need for killing the advices, and instead loading it
-                // From the database/cache.
-                doKillAdvices()
                 val output: MutableList<Advice>? = response.body()
-                Log.d("Output size", output?.size.toString())
-                output?.forEach { advice ->
-                    adviceDao.insert(advice)
+                if(allAdvices.value!!.size < output!!.size) {
+                    // Making sure that only new advices gets loaded, when successful.
+                    // Otherwise no need for killing the advices, and instead loading it
+                    // From the database/cache.
+                    doKillAdvices()
+                    Log.d("Output size", output.size.toString())
+                    output.forEach { advice ->
+                        adviceDao.insert(advice)
+                    }
                 }
             }
         } catch (e: HttpException) {
@@ -109,7 +97,6 @@ class AdviceRepository(application: Application) {
         }
 
     }
-
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -123,6 +110,7 @@ class AdviceRepository(application: Application) {
      *
      * Note: Using coroutines so that it can be running asynchronisly, so that the database don't complain.
      */
+
     private fun populateCategoriesIfNeeded() = scope.launch(IO) {
         categoryList = ArrayList()
         val service = RetrofitFactory.makeRetrofitService()
@@ -133,6 +121,7 @@ class AdviceRepository(application: Application) {
             categoriesInDb.isEmpty() -> {
                 try {
                     val response = request.await()
+                    Log.d("categoryFetch status: ", response.message())
                     if (response.isSuccessful) {
                         val output: List<Category>? = response.body()
                         if (output!!.size > categoriesInDb.size) {
@@ -142,8 +131,7 @@ class AdviceRepository(application: Application) {
                                 categoryDao.insert(Category(it.id, it.name))
                             }
                         }
-                    } else {
-                    }
+                    } else { }
                 } catch (e: HttpException) {
                     e.printStackTrace()
                 } catch (e: Throwable) {
@@ -153,7 +141,6 @@ class AdviceRepository(application: Application) {
             else -> for (category in categoriesInDb) categoryList.add(Category(category.id, category.name))
         }
     }
-
 
     private fun getNameList() {
         categoryNames = categoryDao.getAllNames()

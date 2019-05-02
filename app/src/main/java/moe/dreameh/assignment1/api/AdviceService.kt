@@ -1,9 +1,8 @@
-package moe.dreameh.assignment1.worker
+package moe.dreameh.assignment1.api
 
 import kotlinx.coroutines.Deferred
 import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.room.Category
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

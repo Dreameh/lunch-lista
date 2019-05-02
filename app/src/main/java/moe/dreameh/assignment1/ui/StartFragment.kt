@@ -11,16 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.*
 import kotlinx.android.synthetic.main.start_fragment.*
 import moe.dreameh.assignment1.room.Advice
 import moe.dreameh.assignment1.AdviceAdapter
 import moe.dreameh.assignment1.R
+import moe.dreameh.assignment1.api.PeriodicWorker
+import moe.dreameh.assignment1.room.SharedViewModel
+import java.util.concurrent.TimeUnit
 
 class StartFragment : Fragment() {
 
@@ -41,7 +47,7 @@ class StartFragment : Fragment() {
             channel.description = description
             // Register the channel with the system; you can't change
             // the importance or other notification behaviors after this
-            val notificationManager:NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager: NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -61,16 +67,21 @@ class StartFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         createNotificationChannel()
-        refresh_button.setOnClickListener {
 
-        }
         // Initialize LinearLayoutManager
         viewManager = LinearLayoutManager(context)
 
-        viewModel.bigList.observe(this, Observer<MutableList<Advice>> {
+        // Not working Part of the code
+        val constraint = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        val workManager = WorkManager.getInstance()
+
+        viewModel.bigList.observe(this, Observer<MutableList<Advice>> { list ->
 
             // get objects to the recyclerView
-            viewAdapter = AdviceAdapter(it)
+            viewAdapter = AdviceAdapter(list)
             viewAdapter.notifyItemInserted(0)
 
             recycler_view.apply {
@@ -80,8 +91,49 @@ class StartFragment : Fragment() {
                 layoutManager = viewManager
                 // Set adapter
                 adapter = viewAdapter
+
             }
+
+            // Not working Part of the code
+            val input = Data.Builder()
+                    .putInt("ADVICE", list.size)
+                    .build()
+
+            val request = PeriodicWorkRequestBuilder<PeriodicWorker>(viewModel.getInterval(), TimeUnit.MINUTES)
+                    .setInputData(input)
+                    .setConstraints(constraint)
+                    .build()
+
+            workManager.enqueueUniquePeriodicWork("SYNC",
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    request)
+
+            val observableWorkinfo = workManager.getWorkInfoByIdLiveData(request.id)
+
+            observableWorkinfo.observe(this, Observer {
+                if (it != null && it.state == WorkInfo.State.SUCCEEDED) {
+                    var output = it.outputData.getInt("ADVICE", 0)
+
+                    if (output > 0) {
+
+                        val builder = NotificationCompat.Builder(context!!, "my_channel_id")
+                                .setSmallIcon(android.R.drawable.star_on)
+                                .setContentTitle("NiksiPirkka Syncing Completed")
+                                .setContentText("found $output new advices")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        val notificationManager = NotificationManagerCompat.from(context!!)
+                        // notificationId is a unique int for each notification that you
+                        // must define
+                        notificationManager.notify(1, builder.build())
+
+                        viewModel.scheduledFetching()
+                    }
+                }
+            })
         })
+
+
+
 
         viewModel.categories.observe(this, Observer {
             ArrayAdapter(
