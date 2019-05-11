@@ -1,89 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="14dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="90dp">
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:id="@+id/restaurant_logo"
-                    android:layout_weight="1"
-                    android:padding="0dp" android:scaleType="fitStart" android:cropToPadding="false"
-                    android:adjustViewBounds="true"/>
-            <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/restaraunt_name"
-                    android:layout_weight="1"
-                    tools:text="@tools:sample/full_names" android:textSize="24sp" android:textStyle="bold"/>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#CCCCCC"
-        android:layout_marginTop="5dp"/>
-
-
-    <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        android:elevation="8dp"
+        android:thicknessRatio="1"
+        android:clickable="true"
+        app:cardBackgroundColor="#FFF"
+        android:foreground="?android:attr/selectableItemBackground"
+        tools:targetApi="lollipop"
+        app:cardUseCompatPadding="true"
+        android:focusable="true">
 
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/restaurant_menu"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:text="@tools:sample/cities" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-    </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/restaurant_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:padding="0dp"
+                    android:scaleType="fitStart"
+                    tools:srcCompat="@tools:sample/avatars" />
 
+                <TextView
+                    android:id="@+id/restaraunt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    tools:text="@tools:sample/full_names" />
+            </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <LinearLayout
-                android:orientation="horizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#bdbdbd">
-            <ImageButton
+                android:orientation="vertical"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/restaurant_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    tools:text="@tools:sample/cities"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#e0e0e0"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/infoButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_dialog_info"
-                    android:id="@+id/imageButton" android:layout_weight="1"
-                    style="?android:attr/borderlessButtonStyle"/>
-            <ImageButton
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/icon_size"
+                    android:textColor="@color/icon_color"
+                    android:fontFamily="@font/fontawesomesolid"
+                    android:text="&#xf05a;"/>
+
+                <Button
+                    android:id="@+id/mapButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_dialog_map"
-                    android:id="@+id/imageButton2" android:layout_weight="1"
-                    style="?android:attr/borderlessButtonStyle"/>
-            <ImageButton
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/icon_size"
+                    android:textColor="@color/icon_color"
+                    android:fontFamily="@font/fontawesomesolid"
+                    android:text="&#xf279;"
+                    />
+
+                <Button
+                    android:id="@+id/phoneButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_call"
-                    android:id="@+id/imageButton3" android:layout_weight="1"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/fontawesomesolid"
+                    android:textColor="@color/icon_color"
+                    android:textSize="@dimen/icon_size"
+                    android:text="&#xf095;"
+
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+</RelativeLayout>
