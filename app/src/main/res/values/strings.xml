@@ -1,40 +1,25 @@
 <resources>
-    <string name="app_name">NiksiPirkka</string>
-    <string name="action_settings">Settings</string>
-    <string name="author_name">Author Name</string>
-    <string name="enter_name">Enter Name</string>
-    <string name="content">Write something</string>
-    <string name="enter_content">Enter some content</string>
-    <string name="choose_category">Choose category</string>
-    <string name="select_a_category">Select a category</string>
-    <string name="settings">Settings</string>
-    <string name="about">About</string>
+    <string name="app_name">LunchLista</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="settings_title">Settings</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_about">About</string>
 
-    <string name="about_first">This was made by: </string>
-    <string name="programmer">Dreameh</string>
-    <string name="title_activity_preference">PreferenceActivity</string>
-
-
-    <string name="basic_header">Basics</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="author_title">Default Author</string>
-    <string name="default_category">Default Category</string>
-    <string name="default_author">Anonymous</string>
-    <string name="refresh_button">Refresh</string>
-    <string name="default_sync">Set a time for when syncing with the server</string>
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
 
-    <string-array name="intervals">
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
-    </string-array>
-
-
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
