@@ -5,6 +5,8 @@ It's using [Lunch-Meny](https://github.com/mauritzn/Lunch-Meny) in order to be a
 
 The app serves as a challenge to be able to make something good in a rather short amount of time.
 
+- - - - 
+
 Screenshots:
 
 ### The home view:
