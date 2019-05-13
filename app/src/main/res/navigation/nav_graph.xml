@@ -2,8 +2,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/showFragment">
+            app:startDestination="@id/show_fragment">
 
-    <fragment android:id="@+id/showFragment" android:name="moe.dreameh.lunchlista.ui.ShowFragment"
-              android:label="show_fragment" tools:layout="@layout/show_fragment"/>
+    <fragment
+        android:id="@+id/show_fragment"
+        android:name="moe.dreameh.lunchlista.ui.ShowFragment"
+        android:label="Home"
+        tools:layout="@layout/show_fragment" />
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="moe.dreameh.lunchlista.ui.SettingsFragment"
+        android:label="Settings" />
 </navigation>

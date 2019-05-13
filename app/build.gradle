@@ -51,6 +51,16 @@ dependencies {
     implementation 'info.androidhive:fontawesome:0.0.5'
     // HTMLSpanner
     implementation 'com.github.NightWhistler:HtmlSpanner:0.4'
+    // Material dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.0.0-alpha1'
+
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
 
 
 

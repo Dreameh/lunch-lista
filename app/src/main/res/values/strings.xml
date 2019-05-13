@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LunchLista</string>
+    <string name="app_name">Mariehamn\'s Lunch Lista</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -22,4 +22,6 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="close">CLOSE</string>
 </resources>

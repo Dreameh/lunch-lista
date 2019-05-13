@@ -36,9 +36,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:cropToPadding="false"
+                    android:cropToPadding="true"
                     android:padding="0dp"
-                    android:scaleType="fitStart"
+                    android:scaleType="fitCenter"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     tools:text="@tools:sample/cities"
                     android:padding="8dp"/>
             </LinearLayout>
