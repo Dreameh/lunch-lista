@@ -1,12 +1,9 @@
 package moe.dreameh.lunchlista.ui
 
 import android.os.Bundle
-import android.os.SystemClock.sleep
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -14,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.show_fragment.*
 import moe.dreameh.lunchlista.R
+import net.nightwhistler.htmlspanner.HtmlSpanner
+import java.lang.Thread.sleep
 
 
 class ShowFragment : Fragment() {
@@ -27,32 +26,31 @@ class ShowFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(ListViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ListViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
 
         return inflater.inflate(R.layout.show_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        var progress = ProgressBar(context)
-        progress.isIndeterminate = true
-        progress.progress = 0
 
+
+
+        viewAdapter = RestaurantAdapter(viewModel.restaurants, context!!)
+        sleep(300)
+        viewAdapter.notifyDataSetChanged()
         viewManager = LinearLayoutManager(context)
 
-
-        // A good wait for the list is all the adapter would need
-        kotlin.run {
-            viewAdapter = RestaurantAdapter(viewModel.restaurants, context!!)
-            Log.d("viewAdapter", "${viewAdapter.itemCount}")
-            sleep(400)
-        }
 
         recycler_view.apply {
             // Improve performance for the recyclerview
@@ -61,10 +59,18 @@ class ShowFragment : Fragment() {
             layoutManager = viewManager
             // Set adapter
             adapter = viewAdapter
-            Log.d("viewAdapter", "${viewAdapter.itemCount}")
+
         }
 
-        Log.d("viewAdapter", "${viewAdapter.itemCount}")
+        sleep(300)
+        if (viewModel.getDatum().date!!.isEmpty()) {
+            datum.text =
+                HtmlSpanner().fromHtml("<b>Lunch för</b> ${null} (${null} | ${null})")
+        } else {
+            datum.text =
+                HtmlSpanner().fromHtml("<b>Lunch för</b> ${viewModel.getDatum().date} (${viewModel.getDatum().day} | ${viewModel.getDatum().week_number})")
+        }
+
     }
 
 }

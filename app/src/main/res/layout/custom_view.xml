@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:autoLink="web|phone"
+        android:autoLink="web|phone|email"
         android:textColor="?android:textColorSecondary"
         android:scrollbars="none"
-        android:padding="14dp"
+        android:padding="24dp"
         />
 </LinearLayout>

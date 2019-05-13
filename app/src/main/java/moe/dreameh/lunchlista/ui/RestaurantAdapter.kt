@@ -39,8 +39,6 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>?, pr
     override fun getItemCount() = restaurantList!!.size
 
 
-
-
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name = view.restaraunt_name
         val image = view.restaurant_logo
@@ -54,10 +52,18 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>?, pr
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.menu.text = restaurant.menu
             }
-            // Load image from the link provided from the cache.
-            if(!restaurant.image.isBlank()) {
-                Picasso.get().load(restaurant.image).into(this.image)
+
+            var imgUrl: String? = restaurant.image
+
+            if(imgUrl != null && imgUrl.trim().isEmpty()) {
+                imgUrl = null
             }
+
+            // Load image from the link provided from the cache.
+            Picasso.get().load(imgUrl)
+                .placeholder(R.drawable.placeholder)
+                .into(this.image)
+
             // Setup an Intent with the location provided by the Cache.
             val gmmIntentUri: Uri = Uri.parse("geo:0,0?q=" + restaurant.address)
 

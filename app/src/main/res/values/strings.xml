@@ -1,27 +1,22 @@
 <resources>
-    <string name="app_name">Mariehamn\'s Lunch Lista</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="settings_title">Settings</string>
+    <string name="app_name">Lunch Lista</string>
+    <string name="title_home">Hem</string>
+    <string name="settings_title">Inställningar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="sync_header">Synkning</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="sync_title">Synka listan periodiskt</string>
+    <string name="attachment_title">Incoming feature</string>
+    <string name="attachment_summary_on">Set specific time for when a new update shall arrive</string>
+    <string name="attachment_summary_off">Set specific time for when a new update shall arrive</string>
 
-    <string name="close">CLOSE</string>
+    <string name="close">STÄNG</string>
+    <string name="placeholder_date">Placeholder date</string>
 </resources>

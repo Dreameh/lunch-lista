@@ -3,11 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ShowFragment">
 
+    <TextView
+        android:id="@+id/datum"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/placeholder_date"
+        android:padding="24dp"
+        android:textSize="16sp"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="45dp"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50sp"/>
 
 </FrameLayout>
