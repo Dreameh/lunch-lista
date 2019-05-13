@@ -11,4 +11,4 @@ Screenshots:
 ![alt text](screenshots/screenshot-1.png)
 
 ### The settings view:
-![alt text](screenshots/screenshot-1.png)
+![alt text](screenshots/screenshot-2.png)
