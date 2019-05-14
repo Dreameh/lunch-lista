@@ -6,6 +6,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ShowFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/tv_loading"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Loading..."
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/progress"
+        app:layout_constraintTop_toTopOf="@+id/progress" />
+
+
     <TextView
         android:id="@+id/datum"
         android:layout_width="match_parent"

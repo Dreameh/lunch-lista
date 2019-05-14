@@ -1,60 +1,44 @@
 package moe.dreameh.lunchlista.persistence
 
 import android.util.Log
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moe.dreameh.lunchlista.api.RestaurantApiService
-import retrofit2.Response
-import kotlin.coroutines.CoroutineContext
+import moe.dreameh.lunchlista.api.awaitResult
+import moe.dreameh.lunchlista.api.getOrThrow
+import moe.dreameh.lunchlista.vo.Resource
+import retrofit2.HttpException
 
 class CacheRepository(private val apiService: RestaurantApiService) {
 
-    private var parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
-    private val scope = CoroutineScope(coroutineContext)
-
-    init {
-        loadRestaurants()
-    }
-
-    var restaurants: MutableList<Restaurant> = mutableListOf()
-    var datum: MutableList<Date> = ArrayList()
-
-
-    fun getCache() : Deferred<Response<Results>> {
-        return apiService.getCache()
-    }
-
-
-
-
-    private fun loadRestaurants() = scope.launch(IO) {
-        val request = getCache()
-        try {
-            val response = request.await()
-            if (response.isSuccessful) {
-                val results = response.body()!!
-                insertDatum(Date(results.cache.day, results.cache.week_number, results.cache.date))
-                results.cache.restaurants.forEach { restaurant ->
-                    insert(restaurant)
+    fun getRestaurantList(): MutableLiveData<Resource<Cache>> {
+        val result = MutableLiveData<Resource<Cache>>()
+        result.setValue(Resource.loading((null)))
+        val client = apiService
+        GlobalScope.launch {
+            try {
+                val restaurantListResponse = client.getCache().awaitResult().getOrThrow()
+                withContext(Dispatchers.Main) {
+                    result.value = Resource.success(restaurantListResponse.cache)
+                    Log.d("Resource.success", restaurantListResponse.message)
                 }
-                Log.d("Result", "Restaurants List: ${restaurants.size}")
-            } else {
-                Log.d("Error", "${response.code()}")
+            } catch (e: Throwable) {
+                withContext(Dispatchers.Main) {
+                    when(e) {
+                        is HttpException -> {
+                            result.value = Resource.error("${e.message} | code ${e.response().code()}",
+                                Cache("0", 0, "0", 0, mutableListOf()))
+                        }
+                        else -> result.value = Resource.error("${e.message}", Cache("0",
+                            0, "0", 0, mutableListOf()))
+                    }
+                }
+                e.printStackTrace()
             }
-        } catch (e: Throwable) {
-            Log.d("Error", "${e.message}")
         }
-        Log.d("Result", "Restaurant: ${restaurants.get(0)}")
+        return result
     }
-
-    private fun insert(restaurant: Restaurant) {
-        restaurants.add(restaurant)
-    }
-
-    private fun insertDatum(date: Date) {
-        datum.add(date)
-    }
-
 }

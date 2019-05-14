@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         when(resources?.configuration?.orientation) {
             ORIENTATION_PORTRAIT -> {
                 navController = Navigation.findNavController(this, R.id.nav_host_fragment)
                 nav_view.setupWithNavController(navController)
-                //NavigationUI.setupActionBarWithNavController(this, navController)
             }
         }
 

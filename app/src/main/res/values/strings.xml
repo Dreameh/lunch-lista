@@ -18,5 +18,6 @@
     <string name="attachment_summary_off">Set specific time for when a new update shall arrive</string>
 
     <string name="close">STÄNG</string>
-    <string name="placeholder_date">Placeholder date</string>
+    <string name="placeholder_date"><b>Lunch för</b> %1$s (%2$s | vecka: %3$d)</string>
+    <string name="placeholder_website">%1$s <br/>Webbsida: %2$s</string>
 </resources>

@@ -5,9 +5,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 def versionMajor = 0
-def versionMinor = 1
-def versionPatch = 7
-def versionBuild = 5 // bump for dogfood builds, public betas, etc.
+def versionMinor = 2
+def versionPatch = 1
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 28

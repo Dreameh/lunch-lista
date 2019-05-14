@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.restaurant_list_row.view.*
 import moe.dreameh.lunchlista.R
 import moe.dreameh.lunchlista.persistence.Restaurant
 
-class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>?, private var context: Context) : RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>() {
+class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, private var context: Context) : RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>() {
 
     // Essentially set the XML Layout advice_list_row as the layout for a "row"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,13 +30,19 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>?, pr
 
     // Set ViewHolder variables to the list's item variables
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        with(restaurantList?.get(position)) {
-            holder.bindItems(this!!, context)
+        with(restaurantList[position]) {
+            holder.bindItems(this, context)
         }
     }
 
     //Get size of restaurantlist
-    override fun getItemCount() = restaurantList!!.size
+    override fun getItemCount() = restaurantList.size
+
+    fun replace(data: MutableList<Restaurant>) {
+        restaurantList.clear()
+        restaurantList.addAll(data)
+        notifyDataSetChanged()
+    }
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -79,19 +85,13 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>?, pr
 
             // Adding a info button ClickListener so that when the user clicks, a dialog with information will appear.
             this.info.setOnClickListener {
-                val name = restaurant.name
-                val message = restaurant.info
-                val website = restaurant.website
-
-
                 MaterialDialog(context).show {
                     customView(R.layout.custom_view)
 
                     val customViews = getCustomView()
-                    title(text = "$name")
-                    //message(text = "${message} \nWebbsida: $website")
+                    title(text = restaurant.name)
                     val textView: TextView = customViews.findViewById(R.id.textView2)
-                    textView.text = "${message} \nWebbsida: $website"
+                    textView.text = "${restaurant.info}\nWebbsida: ${restaurant.website}"
 
                     positiveButton(R.string.close)
                 }

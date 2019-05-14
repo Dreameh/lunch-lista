@@ -14,6 +14,8 @@ interface RestaurantApiService {
     @GET("lunch-meny?plain=true")
     fun getCache(): Deferred<Response<Results>>
 
+
+
     companion object Factory {
         fun create(): RestaurantApiService {
             val retrofit = Retrofit.Builder()
