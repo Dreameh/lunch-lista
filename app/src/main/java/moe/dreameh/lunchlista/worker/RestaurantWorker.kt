@@ -11,9 +11,6 @@ class RestaurantWorker(context: Context, workerParams: WorkerParameters)
     override fun doWork(): Result {
 
 
-
-
-
         return Result.success()
     }
 

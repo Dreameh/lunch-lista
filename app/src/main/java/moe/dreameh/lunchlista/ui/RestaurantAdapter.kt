@@ -3,7 +3,6 @@ package moe.dreameh.lunchlista.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +17,16 @@ import kotlinx.android.synthetic.main.restaurant_list_row.view.*
 import moe.dreameh.lunchlista.R
 import moe.dreameh.lunchlista.persistence.Restaurant
 
-class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, private var context: Context) : RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>() {
+class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, private var context: Context) :
+    RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>() {
 
     // Essentially set the XML Layout advice_list_row as the layout for a "row"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         return MyViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.restaurant_list_row, parent, false))
+                .inflate(R.layout.restaurant_list_row, parent, false)
+        )
     }
 
     // Set ViewHolder variables to the list's item variables
@@ -38,13 +39,6 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, pri
     //Get size of restaurantlist
     override fun getItemCount() = restaurantList.size
 
-    fun replace(data: MutableList<Restaurant>) {
-        restaurantList.clear()
-        restaurantList.addAll(data)
-        notifyDataSetChanged()
-    }
-
-
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name = view.restaraunt_name
         val image = view.restaurant_logo
@@ -55,13 +49,12 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, pri
 
         fun bindItems(restaurant: Restaurant, context: Context) {
             this.name.text = restaurant.name
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                this.menu.text = restaurant.menu
-            }
+
+            this.menu.text = restaurant.menu
 
             var imgUrl: String? = restaurant.image
 
-            if(imgUrl != null && imgUrl.trim().isEmpty()) {
+            if (imgUrl != null && imgUrl.trim().isEmpty()) {
                 imgUrl = null
             }
 

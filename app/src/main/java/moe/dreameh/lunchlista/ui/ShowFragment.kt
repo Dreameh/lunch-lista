@@ -72,7 +72,8 @@ class ShowFragment : Fragment() {
                     /*datum.text = HtmlSpanner().fromHtml(getString(R.string.placeholder_date, it.data!!.date,
                         it.data.day, it.data.week_number))*/
 
-                    datum.text = HtmlSpanner().fromHtml("<b>Lunch för</b> ${it.data!!.date} (${it.data.day} | ${it.data.week_number})")
+                    datum.text = HtmlSpanner().fromHtml("<b>Lunch för</b> ${it.data!!.date} (${it.data.day} " +
+                            "| vecka: ${it.data.week_number})")
                 }
                 Status.ERROR -> {
                     Log.d("ShowFragment", "--> Error!")

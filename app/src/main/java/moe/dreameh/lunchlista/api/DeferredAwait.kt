@@ -24,7 +24,6 @@ suspend fun <T : Any> Deferred<Response<T>>.awaitResult(): Result<T> {
                                 Result.Exception(NullPointerException("Response body is null"))
                             }
 
-
                         }
 
                     } else {
