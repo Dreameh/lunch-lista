@@ -1,27 +1,59 @@
 package moe.dreameh.lunchlista
 
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.zubair.alarmmanager.builder.AlarmBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import moe.dreameh.lunchlista.ui.ListViewModel
 import net.nightwhistler.htmlspanner.HtmlSpanner
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var navController: NavController
+    private lateinit var viewModel: ListViewModel
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support
+        // library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "MY CHANNEL NAME"
+            val description = "MY CHANNEL DESCRIPTION"
+
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("my_channel_id", name, importance)
+            channel.description = description
+            // Register the channel with the system; you can't change
+            // the importance or other notification behaviors after this
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         checkFirstRun()
+        createNotificationChannel()
 
         // Setting up the bottom navigation as the navigation.
         when(resources?.configuration?.orientation) {
@@ -32,6 +64,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)

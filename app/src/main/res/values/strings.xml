@@ -33,4 +33,7 @@
         <p>Så som detta...</p>
     </string>
 
+    <string name="notifications">Notifikationer</string>
+    <string name="misc_header">Misc</string>
+
 </resources>

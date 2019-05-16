@@ -27,19 +27,12 @@
                 app:title="@string/sync_title"
                 app:iconSpaceReserved="false"/>
 
-        <EditTextPreference
-                app:key="attachment"
-                app:title="@string/attachment_title"
-                app:summaryOn="@string/attachment_summary_on"
-                app:summaryOff="@string/attachment_summary_off"
-                app:dependency="sync"
-                app:iconSpaceReserved="false"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
         app:title="Notifikationer"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        app:key="notification">
 
         <SwitchPreferenceCompat
             app:key="sync_notification"
