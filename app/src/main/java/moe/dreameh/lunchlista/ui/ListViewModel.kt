@@ -10,8 +10,10 @@ import moe.dreameh.lunchlista.vo.Resource
 class ListViewModel : ViewModel() {
 
     private val repository: CacheRepository = CacheRepositoryProvider.provideCacheRepository()
+    var restaurantList: MutableLiveData<Resource<Cache>>
 
-    fun getList(): MutableLiveData<Resource<Cache>> {
-        return repository.getRestaurantList()
+    init {
+        restaurantList = repository.getRestaurantList()
     }
+
 }

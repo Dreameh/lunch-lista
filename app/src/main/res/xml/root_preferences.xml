@@ -15,7 +15,8 @@
   -->
 
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <PreferenceCategory
             app:title="@string/sync_header"
@@ -37,25 +38,44 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="Misc"
+        app:title="Notifikationer"
         app:iconSpaceReserved="false">
 
-    <Preference
-        android:selectable="false"
-        android:enabled="true"
-        android:key="build_version"
-        android:title="Version"
-        android:summary=""
-        app:iconSpaceReserved="false"/>
-
-        <Preference
-            android:selectable="false"
-            android:enabled="true"
-            android:key="build_version_code"
-            android:title="Build Code"
-            android:summary=""
+        <SwitchPreferenceCompat
+            app:key="sync_notification"
+            app:title="Aktivera Notifikationer"
+            app:summary="Få notifikationer när listan har blivit uppdaterad"
             app:iconSpaceReserved="false"/>
 
+
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Filter"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="filter"
+            app:title="Aktivera filtrering"
+            app:iconSpaceReserved="false" />
+
+        <MultiSelectListPreference
+            app:key="filter-by"
+            app:title="Välj filter"
+            app:summary=""
+            app:iconSpaceReserved="false"
+            app:dependency="filter"/>
+
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        app:title="Misc"
+        app:iconSpaceReserved="false">
 
     <Preference
         android:selectable="true"
@@ -64,6 +84,22 @@
         android:title="Om applikationen"
         app:iconSpaceReserved="false"
         />
+
+        <Preference
+            android:selectable="false"
+            android:enabled="true"
+            android:key="build_version"
+            android:title="Version"
+            android:summary=""
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            android:selectable="false"
+            android:enabled="true"
+            android:key="build_version_code"
+            android:title="Build Code"
+            android:summary=""
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
 
 

@@ -51,7 +51,7 @@ class ShowFragment : Fragment() {
         recycler_view.adapter = viewAdapter
 
 
-        viewModel.getList().observe(this, Observer{
+        viewModel.restaurantList.observe(this, Observer{
             when(it?.status) {
                 Status.LOADING -> {
                     Log.d("ShowFragment", "--> Loading...")

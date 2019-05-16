@@ -20,4 +20,17 @@
     <string name="close">STÄNG</string>
     <string name="placeholder_date"><b>Lunch för</b></string>
     <string name="placeholder_website">%1$s <br/>Webbsida: %2$s</string>
+
+    <!-- version messages -->
+    <string name="welcome_title">Välkommen</string>
+    <string name="welcome_message">Lunch Lista ger dig ett enkelt gränssnitt att se vad som står på menyn idag.</string>
+
+    <string name="update_title">Ny version av Lunch Lista!</string>
+    <string name="update_message">Nu har appen uppdaterats till version %1$s, vilket för med sig %2$s</string>
+    <string name="updates">
+        <b>Nya funktioner</b>
+        <br/>
+        <p>Så som detta...</p>
+    </string>
+
 </resources>
