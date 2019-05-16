@@ -24,7 +24,6 @@ interface RestaurantApiService {
                 .baseUrl("https://mauritz.cloud/")
                 .build()
 
-
             return retrofit.create(RestaurantApiService::class.java)
         }
     }

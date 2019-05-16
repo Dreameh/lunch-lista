@@ -36,7 +36,7 @@ class RestaurantAdapter(private var restaurantList: MutableList<Restaurant>, pri
         }
     }
 
-    //Get size of restaurantlist
+    //Get size of restaurantList
     override fun getItemCount() = restaurantList.size
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {

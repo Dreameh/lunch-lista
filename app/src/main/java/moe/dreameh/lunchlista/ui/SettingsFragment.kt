@@ -23,9 +23,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val about: Preference? = findPreference("about")
         about?.setOnPreferenceClickListener {
-            val string = "Denna applikation är framtagen av:\nLucas Pentinsaari\n\nBaserat på:\nhttps://lunch.mauritzonline.com/\n\n" +
-                    "API gjord av:\nMauritz Nilsson\n" +
-                    "\nVid problem skicka ett mail till:\ndreameh@protonmail.com"
+            val string =
+                "Denna applikation är framtagen av:\nLucas Pentinsaari\n\nBaserat på:\nhttps://lunch.mauritzonline.com/\n\n" +
+                        "API gjord av:\nMauritz Nilsson\n" +
+                        "\nVid problem skicka ett mail till:\ndreameh@protonmail.com"
             MaterialDialog(context!!).show {
                 customView(R.layout.custom_view)
                 val customViews = getCustomView()

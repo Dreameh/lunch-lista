@@ -1,25 +1,22 @@
 package moe.dreameh.lunchlista
 
-
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.MaterialDialog
-import com.zubair.alarmmanager.builder.AlarmBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import moe.dreameh.lunchlista.ui.BottomNavigationBehavior
 import moe.dreameh.lunchlista.ui.ListViewModel
 import net.nightwhistler.htmlspanner.HtmlSpanner
 
@@ -28,6 +25,34 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var viewModel: ListViewModel
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+        checkFirstRun()
+        createNotificationChannel()
+
+        // Setting up the bottom navigation as the navigation.
+        when (resources?.configuration?.orientation) {
+            ORIENTATION_PORTRAIT -> {
+                navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+                nav_view.setupWithNavController(navController)
+
+            }
+        }
+
+        // Adding bottomNavBehavior so that it is not showing while scrolling.
+        val layoutParams: CoordinatorLayout.LayoutParams = nav_view.layoutParams as CoordinatorLayout.LayoutParams
+        layoutParams.behavior = BottomNavigationBehavior()
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, null)
+    }
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -42,33 +67,10 @@ class MainActivity : AppCompatActivity() {
             channel.description = description
             // Register the channel with the system; you can't change
             // the importance or other notification behaviors after this
-            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
-        checkFirstRun()
-        createNotificationChannel()
-
-        // Setting up the bottom navigation as the navigation.
-        when(resources?.configuration?.orientation) {
-            ORIENTATION_PORTRAIT -> {
-                navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-                nav_view.setupWithNavController(navController)
-            }
-        }
-
-    }
-
-
-
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, null)
     }
 
     private fun checkFirstRun() {
@@ -98,8 +100,13 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Version", "--> Upgrade detected...")
                 MaterialDialog(this).show {
                     title(R.string.update_title)
-                    message(text = getString(R.string.update_message, BuildConfig.VERSION_NAME, HtmlSpanner().fromHtml(
-                        getString(R.string.updates))))
+                    message(
+                        text = getString(
+                            R.string.update_message, BuildConfig.VERSION_NAME, HtmlSpanner().fromHtml(
+                                getString(R.string.updates)
+                            )
+                        )
+                    )
                     positiveButton(R.string.close)
                 }
             }
